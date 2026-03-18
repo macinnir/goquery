@@ -1,4 +1,5 @@
 # Query 
+![Coverage](https://img.shields.io/badge/Coverage-45.4%25-yellow)
 
 [![Go](https://github.com/macinnir/goquery/actions/workflows/go.yml/badge.svg)](https://github.com/macinnir/goquery/actions/workflows/go.yml)
 
