@@ -3,20 +3,20 @@ package testassets
 import (
 	"encoding/json"
 
-	"github.com/macinnir/query"
+	goquery "github.com/macinnir/query"
 )
 
 const (
-	JobSales_TableName query.TableName = "JobSales"
+	JobSales_TableName goquery.TableName = "JobSales"
 
-	JobSales_Column_JobSalesID        query.Column = "JobSalesID"
-	JobSales_Column_JobID             query.Column = "JobID"
-	JobSales_Column_UserID            query.Column = "UserID"
-	JobSales_Column_CommissionPercent query.Column = "CommissionPercent"
-	JobSales_Column_DateCreated       query.Column = "DateCreated"
-	JobSales_Column_IsDeleted         query.Column = "IsDeleted"
-	JobSales_Column_CommissionDollars query.Column = "CommissionDollars"
-	JobSales_Column_IsHouse           query.Column = "IsHouse"
+	JobSales_Column_JobSalesID        goquery.Column = "JobSalesID"
+	JobSales_Column_JobID             goquery.Column = "JobID"
+	JobSales_Column_UserID            goquery.Column = "UserID"
+	JobSales_Column_CommissionPercent goquery.Column = "CommissionPercent"
+	JobSales_Column_DateCreated       goquery.Column = "DateCreated"
+	JobSales_Column_IsDeleted         goquery.Column = "IsDeleted"
+	JobSales_Column_CommissionDollars goquery.Column = "CommissionDollars"
+	JobSales_Column_IsHouse           goquery.Column = "IsHouse"
 )
 
 // JobSales is a `JobSales` data model
@@ -32,12 +32,12 @@ type JobSales struct {
 }
 
 // Comment_TableName is the name of the table
-func (c *JobSales) Table_Name() query.TableName {
+func (c *JobSales) Table_Name() goquery.TableName {
 	return JobSales_TableName
 }
 
-func (c *JobSales) Table_Columns() []query.Column {
-	return []query.Column{
+func (c *JobSales) Table_Columns() []goquery.Column {
+	return []goquery.Column{
 		JobSales_Column_JobSalesID,
 		JobSales_Column_JobID,
 		JobSales_Column_UserID,
@@ -49,8 +49,8 @@ func (c *JobSales) Table_Columns() []query.Column {
 	}
 }
 
-func (c *JobSales) Table_Column_Types() map[query.Column]string {
-	return map[query.Column]string{
+func (c *JobSales) Table_Column_Types() map[goquery.Column]string {
+	return map[goquery.Column]string{
 		"JobSalesID":        "%d",
 		"JobID":             "%d",
 		"UserID":            "%d",
@@ -62,8 +62,8 @@ func (c *JobSales) Table_Column_Types() map[query.Column]string {
 	}
 }
 
-func (c *JobSales) Table_Column_Values() map[query.Column]interface{} {
-	return map[query.Column]interface{}{
+func (c *JobSales) Table_Column_Values() map[goquery.Column]interface{} {
+	return map[goquery.Column]interface{}{
 		"JobSalesID":        c.JobSalesID,
 		"JobID":             c.JobID,
 		"UserID":            c.UserID,
@@ -76,7 +76,7 @@ func (c *JobSales) Table_Column_Values() map[query.Column]interface{} {
 }
 
 // Comment_PrimaryKey is the name of the table's primary key
-func (c *JobSales) Table_PrimaryKey() query.Column {
+func (c *JobSales) Table_PrimaryKey() goquery.Column {
 	return "JobSalesID"
 }
 
@@ -85,13 +85,13 @@ func (c *JobSales) Table_PrimaryKey_Value() int64 {
 }
 
 // Comment_InsertColumns is a list of all insert columns for this model
-func (c *JobSales) Table_InsertColumns() []query.Column {
-	return []query.Column{"DateCreated", "Content", "ObjectType", "ObjectID"}
+func (c *JobSales) Table_InsertColumns() []goquery.Column {
+	return []goquery.Column{"DateCreated", "Content", "ObjectType", "ObjectID"}
 }
 
 // Comment_UpdateColumns is a list of all update columns for this model
-func (c *JobSales) Table_UpdateColumns() []query.Column {
-	return []query.Column{"Content", "ObjectType", "ObjectID"}
+func (c *JobSales) Table_UpdateColumns() []goquery.Column {
+	return []goquery.Column{"Content", "ObjectType", "ObjectID"}
 }
 
 func (c *JobSales) String() string {
@@ -99,18 +99,18 @@ func (c *JobSales) String() string {
 	return string(b)
 }
 
-func (c *JobSales) Create(db query.IDB) error {
+func (c *JobSales) Create(db goquery.IDB) error {
 	return nil
 }
 
-func (c *JobSales) Update(db query.IDB) error {
+func (c *JobSales) Update(db goquery.IDB) error {
 	return nil
 }
 
-func (c *JobSales) Delete(db query.IDB) error {
+func (c *JobSales) Delete(db goquery.IDB) error {
 	return nil
 }
 
-func (c *JobSales) FromID(db query.IDB, id int64) (query.IModel, error) {
+func (c *JobSales) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 	return nil, nil
 }

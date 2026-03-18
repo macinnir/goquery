@@ -1,4 +1,4 @@
-package query
+package goquery
 
 import (
 	"errors"
@@ -156,7 +156,7 @@ func (q *Q) OrderBy(col Column, dir OrderDir) *Q {
 
 // Fields injects fields as raw strings into the field clause of the query
 //
-//	sql, e := query.Select(&testassets.Job{}).
+//	sql, e := goquery.Select(&testassets.Job{}).
 //		Fields(
 //			NewField(FieldTypeBasic, "JobID"),
 //			NewField(FieldTypeBasic, "Name", "Foo"),
@@ -204,7 +204,7 @@ func (q *Q) FieldRaw(fieldStr, as string) *Q {
 
 // Count creates a count statement
 //
-//	q.Count(query.Column("Foo"), "FooCounted")
+//	q.Count(goquery.Column("Foo"), "FooCounted")
 //	COALESCE(COUNT(`t`.`Foo`), 0) AS `FooCounted`
 func (q *Q) Count(name Column, as string) *Q {
 
@@ -221,7 +221,7 @@ func (q *Q) Count(name Column, as string) *Q {
 
 // Sum creates a sum statement
 //
-//	q.Sum(query.Column("Foo"), "FooSummed")
+//	q.Sum(goquery.Column("Foo"), "FooSummed")
 //	COALESCE(SUM(`t`.`Foo`), 0) AS `FooSummed`
 func (q *Q) Sum(name Column, as string) *Q {
 
@@ -238,7 +238,7 @@ func (q *Q) Sum(name Column, as string) *Q {
 
 // Avg creates an Avg statement
 //
-//	q.Avg(query.Column("Foo"), "FooAveraged")
+//	q.Avg(goquery.Column("Foo"), "FooAveraged")
 //	COALESCE(AVG(`t`.`Foo`), 0) AS `FooAveraged`
 func (q *Q) Avg(name Column, as string) *Q {
 
@@ -255,7 +255,7 @@ func (q *Q) Avg(name Column, as string) *Q {
 
 // Min creates a min statement
 //
-//	q.Min(query.Column("Foo"), "MinFoo")
+//	q.Min(goquery.Column("Foo"), "MinFoo")
 //	COALESCE(MIN(`t`.`Foo`), 0) AS `MinFoo`
 func (q *Q) Min(name Column, as string) *Q {
 
@@ -272,7 +272,7 @@ func (q *Q) Min(name Column, as string) *Q {
 
 // Max creates a max statement
 //
-//	q.Max(query.Column("Foo"), "MaxFoo")
+//	q.Max(goquery.Column("Foo"), "MaxFoo")
 //	COALESCE(MAX(`t`.`Foo`), 0) AS `MaxFoo`
 func (q *Q) Max(name Column, as string) *Q {
 
@@ -290,21 +290,21 @@ func (q *Q) Max(name Column, as string) *Q {
 // Where creates or adds to an existing where clause
 //
 //   - Simple
-//     q.Where(query.EQ(query.Column("A"), "B"))
+//     q.Where(goquery.EQ(goquery.Column("A"), "B"))
 //     WHERE `t`.`B` = `t`.`B`
 //
 //   - Multiple Arguments
-//     q.Where(query.EQ(query.Column("A"), "B"), query.And(), query.EQ(query.Column("C"), "D"))
+//     q.Where(goquery.EQ(goquery.Column("A"), "B"), goquery.And(), goquery.EQ(goquery.Column("C"), "D"))
 //     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
 //
 //   - Daisy Chain
-//     q.Where(query.EQ(query.Column("A"), "B")).Where(query.And()).Where(query.EQ(query.Column("C"), "D"))
+//     q.Where(goquery.EQ(goquery.Column("A"), "B")).Where(goquery.And()).Where(goquery.EQ(goquery.Column("C"), "D"))
 //     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
 //
 //   - Separate lines
-//     q.Where(query.EQ(query.Column("A"), "B"))
-//     q.Where(query.And())
-//     q.Where(query.EQ(query.Column("C"), "D"))
+//     q.Where(goquery.EQ(goquery.Column("A"), "B"))
+//     q.Where(goquery.And())
+//     q.Where(goquery.EQ(goquery.Column("C"), "D"))
 //     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
 func (q *Q) Where(args ...*WherePart) *Q {
 	// allow for multiple where calls in single query
@@ -717,14 +717,14 @@ const (
 // This object is an exposed part of the api to make conditional queries easier
 // EXAMPLE:
 //
-//	wheres := []query.WherePart{
-//		query.EQ(models.ObjectRelationship_Column_IsDeleted, 0),
+//	wheres := []goquery.WherePart{
+//		goquery.EQ(models.ObjectRelationship_Column_IsDeleted, 0),
 //	}
 //	if objectTypeFrom != constants.ObjectTypeUnknown {
-//		wheres = append(wheres, query.And(), query.EQ(models.ObjectRelationship_Column_ObjectTypeFrom, objectTypeFrom))
+//		wheres = append(wheres, goquery.And(), goquery.EQ(models.ObjectRelationship_Column_ObjectTypeFrom, objectTypeFrom))
 //	}
 //	if objectIDFrom > 0 {
-//		wheres = append(wheres, query.And(), query.EQ(models.ObjectRelationship_Column_ObjectIDFrom, objectIDFrom))
+//		wheres = append(wheres, goquery.And(), goquery.EQ(models.ObjectRelationship_Column_ObjectIDFrom, objectIDFrom))
 //	}
 type WherePart struct {
 	whereType WhereType
@@ -766,13 +766,13 @@ func EQ(fieldName Column, value interface{}) *WherePart {
 // EQF allows for one column to be equal to another
 // Example for a subselect
 //
-// query.Select(&models.UserGroupUser{}).Alias("ugu").FieldRaw("1", "n").Where(
+// goquery.Select(&models.UserGroupUser{}).Alias("ugu").FieldRaw("1", "n").Where(
 //
-//	query.EQF("UserID", "`u`.`UserID`"),
-//	query.And(),
-//	query.EQ("UserGroupID", groupID),
-//	query.And(),
-//	query.EQ("IsDeleted", 0),
+//	goquery.EQF("UserID", "`u`.`UserID`"),
+//	goquery.And(),
+//	goquery.EQ("UserGroupID", groupID),
+//	goquery.And(),
+//	goquery.EQ("IsDeleted", 0),
 //
 // ),
 func EQF(fieldName1, fieldName2 string) *WherePart {
@@ -845,7 +845,7 @@ func Mod(fieldName Column, value, remainder int64) *WherePart {
 }
 
 // Modf MOD(value, `t`.`Field`) = remainder
-// Example: query.Mod("foo", 2, 1) -> `t`.`Foo` % 2 = 1
+// Example: goquery.Mod("foo", 2, 1) -> `t`.`Foo` % 2 = 1
 func Modf(value int64, fieldName Column, remainder int64) *WherePart {
 	return newWherePart(
 		WhereTypeModF,
@@ -855,7 +855,7 @@ func Modf(value int64, fieldName Column, remainder int64) *WherePart {
 }
 
 // BitAnd `t`.`Field` & a = b
-// Example: query.BitAnd("foo", 2, 1) -> `t`.`Foo` & 2 = 1
+// Example: goquery.BitAnd("foo", 2, 1) -> `t`.`Foo` & 2 = 1
 func BitAnd(fieldName Column, a, b int64) *WherePart {
 	return newWherePart(
 		WhereTypeBitAnd,
@@ -865,7 +865,7 @@ func BitAnd(fieldName Column, a, b int64) *WherePart {
 }
 
 // IN is an IN clause
-// Example: query.IN("col1", "foo", "bar", "baz")
+// Example: goquery.IN("col1", "foo", "bar", "baz")
 func IN(fieldName Column, values ...interface{}) *WherePart {
 	return newWherePart(
 		WhereTypeIN,
@@ -875,7 +875,7 @@ func IN(fieldName Column, values ...interface{}) *WherePart {
 }
 
 // NOTIN is an NOT IN clause
-// Example: query.NOTIN("col1", "foo", "bar", "baz")
+// Example: goquery.NOTIN("col1", "foo", "bar", "baz")
 // Example: queyr.NOTIN("col2", 1, 2, 3)
 func NOTIN(fieldName Column, values ...interface{}) *WherePart {
 	return newWherePart(
@@ -898,7 +898,7 @@ func INString(fieldName Column, values []string) *WherePart {
 }
 
 // Rawf is a raw SQL statement
-// Example: query.Rawf("`t`.`LastRunDate` + 60000 < %d", seconds)),
+// Example: goquery.Rawf("`t`.`LastRunDate` + 60000 < %d", seconds)),
 func Rawf(str string, args ...interface{}) *WherePart {
 	return newWherePart(
 		WhereTypeRaw,
@@ -978,7 +978,7 @@ func And(args ...*WherePart) *WherePart {
 }
 
 // Ands takes a list of args and separes them all by `AND`
-// Example: Ands(query.EQ(1,1), query.EQ(2,2), query.EQ(3,3)) == 1 = 1 AND 2 = 2 AND 3 = 3
+// Example: Ands(goquery.EQ(1,1), goquery.EQ(2,2), goquery.EQ(3,3)) == 1 = 1 AND 2 = 2 AND 3 = 3
 func Ands(args ...*WherePart) *WherePart {
 
 	if len(args) == 0 {
@@ -1036,7 +1036,7 @@ func Or(args ...*WherePart) *WherePart {
 }
 
 // Ors takes a list of args and separes them all by `OR`
-// Example: Ors(query.EQ(1,1), query.EQ(2,2), query.EQ(3,3)) == 1 = 1 OR 2 = 2 OR 3 = 3
+// Example: Ors(goquery.EQ(1,1), goquery.EQ(2,2), goquery.EQ(3,3)) == 1 = 1 OR 2 = 2 OR 3 = 3
 func Ors(args ...*WherePart) *WherePart {
 
 	if len(args) == 0 {

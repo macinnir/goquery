@@ -3,7 +3,7 @@ package testassets
 import (
 	"encoding/json"
 
-	"github.com/macinnir/query"
+	goquery "github.com/macinnir/query"
 )
 
 const (
@@ -12,41 +12,41 @@ const (
 	TaskBatchSchedule_SchemaName = "dvc"
 
 	// TaskBatchSchedule_TableName is the name of the table
-	TaskBatchSchedule_TableName query.TableName = "TaskBatchSchedule"
+	TaskBatchSchedule_TableName goquery.TableName = "TaskBatchSchedule"
 
 	// Columns
-	TaskBatchSchedule_Column_TaskBatchScheduleID query.Column = "TaskBatchScheduleID"
-	TaskBatchSchedule_Column_TaskBatchID         query.Column = "TaskBatchID"
-	TaskBatchSchedule_Column_DOM                 query.Column = "DOM"
-	TaskBatchSchedule_Column_DOW                 query.Column = "DOW"
-	TaskBatchSchedule_Column_HOD                 query.Column = "HOD"
-	TaskBatchSchedule_Column_MOH                 query.Column = "MOH"
-	TaskBatchSchedule_Column_DateCreated         query.Column = "DateCreated"
-	TaskBatchSchedule_Column_IsDeleted           query.Column = "IsDeleted"
-	TaskBatchSchedule_Column_IsActive            query.Column = "IsActive"
-	TaskBatchSchedule_Column_CurrentStatus       query.Column = "CurrentStatus"
-	TaskBatchSchedule_Column_LastRunDate         query.Column = "LastRunDate"
-	TaskBatchSchedule_Column_LastSuccessDate     query.Column = "LastSuccessDate"
-	TaskBatchSchedule_Column_LastErrorDate       query.Column = "LastErrorDate"
-	TaskBatchSchedule_Column_NumFailed           query.Column = "NumFailed"
-	TaskBatchSchedule_Column_NumFinished         query.Column = "NumFinished"
-	TaskBatchSchedule_Column_NumAttempted        query.Column = "NumAttempted"
+	TaskBatchSchedule_Column_TaskBatchScheduleID goquery.Column = "TaskBatchScheduleID"
+	TaskBatchSchedule_Column_TaskBatchID         goquery.Column = "TaskBatchID"
+	TaskBatchSchedule_Column_DOM                 goquery.Column = "DOM"
+	TaskBatchSchedule_Column_DOW                 goquery.Column = "DOW"
+	TaskBatchSchedule_Column_HOD                 goquery.Column = "HOD"
+	TaskBatchSchedule_Column_MOH                 goquery.Column = "MOH"
+	TaskBatchSchedule_Column_DateCreated         goquery.Column = "DateCreated"
+	TaskBatchSchedule_Column_IsDeleted           goquery.Column = "IsDeleted"
+	TaskBatchSchedule_Column_IsActive            goquery.Column = "IsActive"
+	TaskBatchSchedule_Column_CurrentStatus       goquery.Column = "CurrentStatus"
+	TaskBatchSchedule_Column_LastRunDate         goquery.Column = "LastRunDate"
+	TaskBatchSchedule_Column_LastSuccessDate     goquery.Column = "LastSuccessDate"
+	TaskBatchSchedule_Column_LastErrorDate       goquery.Column = "LastErrorDate"
+	TaskBatchSchedule_Column_NumFailed           goquery.Column = "NumFailed"
+	TaskBatchSchedule_Column_NumFinished         goquery.Column = "NumFinished"
+	TaskBatchSchedule_Column_NumAttempted        goquery.Column = "NumAttempted"
 )
 
 var (
 	// TaskBatchSchedule_Columns is a list of all the columns
-	TaskBatchSchedule_Columns = []query.Column{
+	TaskBatchSchedule_Columns = []goquery.Column{
 		TaskBatchSchedule_Column_TaskBatchScheduleID, TaskBatchSchedule_Column_TaskBatchID, TaskBatchSchedule_Column_DOM, TaskBatchSchedule_Column_DOW, TaskBatchSchedule_Column_HOD, TaskBatchSchedule_Column_MOH, TaskBatchSchedule_Column_DateCreated, TaskBatchSchedule_Column_IsDeleted, TaskBatchSchedule_Column_IsActive, TaskBatchSchedule_Column_CurrentStatus, TaskBatchSchedule_Column_LastRunDate, TaskBatchSchedule_Column_LastSuccessDate, TaskBatchSchedule_Column_LastErrorDate, TaskBatchSchedule_Column_NumFailed, TaskBatchSchedule_Column_NumFinished, TaskBatchSchedule_Column_NumAttempted}
 
 	// TaskBatchSchedule_Column_Types maps columns to their string types
-	TaskBatchSchedule_Column_Types = map[query.Column]string{
+	TaskBatchSchedule_Column_Types = map[goquery.Column]string{
 		TaskBatchSchedule_Column_TaskBatchScheduleID: "%d", TaskBatchSchedule_Column_TaskBatchID: "%d", TaskBatchSchedule_Column_DOM: "%d", TaskBatchSchedule_Column_DOW: "%d", TaskBatchSchedule_Column_HOD: "%d", TaskBatchSchedule_Column_MOH: "%d", TaskBatchSchedule_Column_DateCreated: "%d", TaskBatchSchedule_Column_IsDeleted: "%d", TaskBatchSchedule_Column_IsActive: "%d", TaskBatchSchedule_Column_CurrentStatus: "%d", TaskBatchSchedule_Column_LastRunDate: "%d", TaskBatchSchedule_Column_LastSuccessDate: "%d", TaskBatchSchedule_Column_LastErrorDate: "%d", TaskBatchSchedule_Column_NumFailed: "%d", TaskBatchSchedule_Column_NumFinished: "%d", TaskBatchSchedule_Column_NumAttempted: "%d"}
 	// TaskBatchSchedule_UpdateColumns is a list of all update columns for this model
-	TaskBatchSchedule_UpdateColumns = []query.Column{TaskBatchSchedule_Column_TaskBatchID, TaskBatchSchedule_Column_DOM, TaskBatchSchedule_Column_DOW, TaskBatchSchedule_Column_HOD, TaskBatchSchedule_Column_MOH, TaskBatchSchedule_Column_IsDeleted, TaskBatchSchedule_Column_IsActive, TaskBatchSchedule_Column_CurrentStatus, TaskBatchSchedule_Column_LastRunDate, TaskBatchSchedule_Column_LastSuccessDate, TaskBatchSchedule_Column_LastErrorDate, TaskBatchSchedule_Column_NumFailed, TaskBatchSchedule_Column_NumFinished, TaskBatchSchedule_Column_NumAttempted}
+	TaskBatchSchedule_UpdateColumns = []goquery.Column{TaskBatchSchedule_Column_TaskBatchID, TaskBatchSchedule_Column_DOM, TaskBatchSchedule_Column_DOW, TaskBatchSchedule_Column_HOD, TaskBatchSchedule_Column_MOH, TaskBatchSchedule_Column_IsDeleted, TaskBatchSchedule_Column_IsActive, TaskBatchSchedule_Column_CurrentStatus, TaskBatchSchedule_Column_LastRunDate, TaskBatchSchedule_Column_LastSuccessDate, TaskBatchSchedule_Column_LastErrorDate, TaskBatchSchedule_Column_NumFailed, TaskBatchSchedule_Column_NumFinished, TaskBatchSchedule_Column_NumAttempted}
 	// TaskBatchSchedule_InsertColumns is a list of all insert columns for this model
-	TaskBatchSchedule_InsertColumns = []query.Column{TaskBatchSchedule_Column_TaskBatchID, TaskBatchSchedule_Column_DOM, TaskBatchSchedule_Column_DOW, TaskBatchSchedule_Column_HOD, TaskBatchSchedule_Column_MOH, TaskBatchSchedule_Column_DateCreated, TaskBatchSchedule_Column_IsActive, TaskBatchSchedule_Column_CurrentStatus, TaskBatchSchedule_Column_LastRunDate, TaskBatchSchedule_Column_LastSuccessDate, TaskBatchSchedule_Column_LastErrorDate, TaskBatchSchedule_Column_NumFailed, TaskBatchSchedule_Column_NumFinished, TaskBatchSchedule_Column_NumAttempted}
+	TaskBatchSchedule_InsertColumns = []goquery.Column{TaskBatchSchedule_Column_TaskBatchID, TaskBatchSchedule_Column_DOM, TaskBatchSchedule_Column_DOW, TaskBatchSchedule_Column_HOD, TaskBatchSchedule_Column_MOH, TaskBatchSchedule_Column_DateCreated, TaskBatchSchedule_Column_IsActive, TaskBatchSchedule_Column_CurrentStatus, TaskBatchSchedule_Column_LastRunDate, TaskBatchSchedule_Column_LastSuccessDate, TaskBatchSchedule_Column_LastErrorDate, TaskBatchSchedule_Column_NumFailed, TaskBatchSchedule_Column_NumFinished, TaskBatchSchedule_Column_NumAttempted}
 	// TaskBatchSchedule_PrimaryKey is the name of the table's primary key
-	TaskBatchSchedule_PrimaryKey query.Column = "TaskBatchScheduleID"
+	TaskBatchSchedule_PrimaryKey goquery.Column = "TaskBatchScheduleID"
 )
 
 // TaskBatchSchedule is a `TaskBatchSchedule` data model
@@ -70,21 +70,21 @@ type TaskBatchSchedule struct {
 }
 
 // TaskBatchSchedule_TableName is the name of the table
-func (c *TaskBatchSchedule) Table_Name() query.TableName {
+func (c *TaskBatchSchedule) Table_Name() goquery.TableName {
 	return TaskBatchSchedule_TableName
 }
 
-func (c *TaskBatchSchedule) Table_Columns() []query.Column {
+func (c *TaskBatchSchedule) Table_Columns() []goquery.Column {
 	return TaskBatchSchedule_Columns
 }
 
 // Table_ColumnTypes returns a map of tableColumn names with their fmt string types
-func (c *TaskBatchSchedule) Table_Column_Types() map[query.Column]string {
+func (c *TaskBatchSchedule) Table_Column_Types() map[goquery.Column]string {
 	return TaskBatchSchedule_Column_Types
 }
 
 // Table_PrimaryKey returns the name of this table's primary key
-func (c *TaskBatchSchedule) Table_PrimaryKey() query.Column {
+func (c *TaskBatchSchedule) Table_PrimaryKey() goquery.Column {
 	return TaskBatchSchedule_PrimaryKey
 }
 
@@ -94,12 +94,12 @@ func (c *TaskBatchSchedule) Table_PrimaryKey_Value() int64 {
 }
 
 // Table_InsertColumns is a list of all insert columns for this model
-func (c *TaskBatchSchedule) Table_InsertColumns() []query.Column {
+func (c *TaskBatchSchedule) Table_InsertColumns() []goquery.Column {
 	return TaskBatchSchedule_InsertColumns
 }
 
 // Table_UpdateColumns is a list of all update columns for this model
-func (c *TaskBatchSchedule) Table_UpdateColumns() []query.Column {
+func (c *TaskBatchSchedule) Table_UpdateColumns() []goquery.Column {
 	return TaskBatchSchedule_UpdateColumns
 }
 
@@ -114,18 +114,18 @@ func (c *TaskBatchSchedule) String() string {
 	return string(bytes)
 }
 
-func (c *TaskBatchSchedule) Create(db query.IDB) error {
+func (c *TaskBatchSchedule) Create(db goquery.IDB) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) Update(db query.IDB) error {
+func (c *TaskBatchSchedule) Update(db goquery.IDB) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) Delete(db query.IDB) error {
+func (c *TaskBatchSchedule) Delete(db goquery.IDB) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) FromID(db query.IDB, id int64) (query.IModel, error) {
+func (c *TaskBatchSchedule) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 	return nil, nil
 }

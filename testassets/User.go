@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/macinnir/query"
+	goquery "github.com/macinnir/query"
 	"gopkg.in/guregu/null.v3"
 )
 
@@ -15,68 +15,68 @@ const (
 	User_SchemaName = "core"
 
 	// User_TableName is the name of the table
-	User_TableName query.TableName = "User"
+	User_TableName goquery.TableName = "User"
 
 	// Columns
 
-	User_Column_APIKeyID                query.Column = "APIKeyID"
-	User_Column_AccountID               query.Column = "AccountID"
-	User_Column_AccountRole             query.Column = "AccountRole"
-	User_Column_AppTheme                query.Column = "AppTheme"
-	User_Column_Coins                   query.Column = "Coins"
-	User_Column_DailyStudiedTermsGoal   query.Column = "DailyStudiedTermsGoal"
-	User_Column_DailyTestedTermsGoal    query.Column = "DailyTestedTermsGoal"
-	User_Column_DateActivated           query.Column = "DateActivated"
-	User_Column_DateCreated             query.Column = "DateCreated"
-	User_Column_DateEmailValidated      query.Column = "DateEmailValidated"
-	User_Column_Email                   query.Column = "Email"
-	User_Column_EnergyPoints            query.Column = "EnergyPoints"
-	User_Column_FocusedCollectionID     query.Column = "FocusedCollectionID"
-	User_Column_FollowerCount           query.Column = "FollowerCount"
-	User_Column_FollowingCount          query.Column = "FollowingCount"
-	User_Column_FullName                query.Column = "FullName"
-	User_Column_GoogleSubID             query.Column = "GoogleSubID"
-	User_Column_ID                      query.Column = "ID"
-	User_Column_ImageID                 query.Column = "ImageID"
-	User_Column_IsDeleted               query.Column = "IsDeleted"
-	User_Column_IsDisabled              query.Column = "IsDisabled"
-	User_Column_IsLocked                query.Column = "IsLocked"
-	User_Column_IsPublic                query.Column = "IsPublic"
-	User_Column_IsService               query.Column = "IsService"
-	User_Column_IsShortcutsEnabled      query.Column = "IsShortcutsEnabled"
-	User_Column_Language                query.Column = "Language"
-	User_Column_LastLogin               query.Column = "LastLogin"
-	User_Column_LastLoginAttempt        query.Column = "LastLoginAttempt"
-	User_Column_LastLoginAttemptCounter query.Column = "LastLoginAttemptCounter"
-	User_Column_LastNotificationDate    query.Column = "LastNotificationDate"
-	User_Column_LastUpdated             query.Column = "LastUpdated"
-	User_Column_Level                   query.Column = "Level"
-	User_Column_Locale                  query.Column = "Locale"
-	User_Column_ParentUserID            query.Column = "ParentUserID"
-	User_Column_PermissionCount         query.Column = "PermissionCount"
-	User_Column_Points                  query.Column = "Points"
-	User_Column_PolicyCount             query.Column = "PolicyCount"
-	User_Column_ProfileID               query.Column = "ProfileID"
-	User_Column_ProfileImageID          query.Column = "ProfileImageID"
-	User_Column_ProfileImageThumbURL    query.Column = "ProfileImageThumbURL"
-	User_Column_ProfileImageURL         query.Column = "ProfileImageURL"
-	User_Column_ReasonForLeaving        query.Column = "ReasonForLeaving"
-	User_Column_RoleCount               query.Column = "RoleCount"
-	User_Column_SMSPhoneNumber          query.Column = "SMSPhoneNumber"
-	User_Column_SendSMSNotifications    query.Column = "SendSMSNotifications"
-	User_Column_Streak                  query.Column = "Streak"
-	User_Column_Timezone                query.Column = "Timezone"
-	User_Column_TwoFactorEnabled        query.Column = "TwoFactorEnabled"
-	User_Column_TwoFactorLastCompleted  query.Column = "TwoFactorLastCompleted"
-	User_Column_UserGroupCount          query.Column = "UserGroupCount"
-	User_Column_UserID                  query.Column = "UserID"
-	User_Column_UserPrefix              query.Column = "UserPrefix"
-	User_Column_Username                query.Column = "Username"
+	User_Column_APIKeyID                goquery.Column = "APIKeyID"
+	User_Column_AccountID               goquery.Column = "AccountID"
+	User_Column_AccountRole             goquery.Column = "AccountRole"
+	User_Column_AppTheme                goquery.Column = "AppTheme"
+	User_Column_Coins                   goquery.Column = "Coins"
+	User_Column_DailyStudiedTermsGoal   goquery.Column = "DailyStudiedTermsGoal"
+	User_Column_DailyTestedTermsGoal    goquery.Column = "DailyTestedTermsGoal"
+	User_Column_DateActivated           goquery.Column = "DateActivated"
+	User_Column_DateCreated             goquery.Column = "DateCreated"
+	User_Column_DateEmailValidated      goquery.Column = "DateEmailValidated"
+	User_Column_Email                   goquery.Column = "Email"
+	User_Column_EnergyPoints            goquery.Column = "EnergyPoints"
+	User_Column_FocusedCollectionID     goquery.Column = "FocusedCollectionID"
+	User_Column_FollowerCount           goquery.Column = "FollowerCount"
+	User_Column_FollowingCount          goquery.Column = "FollowingCount"
+	User_Column_FullName                goquery.Column = "FullName"
+	User_Column_GoogleSubID             goquery.Column = "GoogleSubID"
+	User_Column_ID                      goquery.Column = "ID"
+	User_Column_ImageID                 goquery.Column = "ImageID"
+	User_Column_IsDeleted               goquery.Column = "IsDeleted"
+	User_Column_IsDisabled              goquery.Column = "IsDisabled"
+	User_Column_IsLocked                goquery.Column = "IsLocked"
+	User_Column_IsPublic                goquery.Column = "IsPublic"
+	User_Column_IsService               goquery.Column = "IsService"
+	User_Column_IsShortcutsEnabled      goquery.Column = "IsShortcutsEnabled"
+	User_Column_Language                goquery.Column = "Language"
+	User_Column_LastLogin               goquery.Column = "LastLogin"
+	User_Column_LastLoginAttempt        goquery.Column = "LastLoginAttempt"
+	User_Column_LastLoginAttemptCounter goquery.Column = "LastLoginAttemptCounter"
+	User_Column_LastNotificationDate    goquery.Column = "LastNotificationDate"
+	User_Column_LastUpdated             goquery.Column = "LastUpdated"
+	User_Column_Level                   goquery.Column = "Level"
+	User_Column_Locale                  goquery.Column = "Locale"
+	User_Column_ParentUserID            goquery.Column = "ParentUserID"
+	User_Column_PermissionCount         goquery.Column = "PermissionCount"
+	User_Column_Points                  goquery.Column = "Points"
+	User_Column_PolicyCount             goquery.Column = "PolicyCount"
+	User_Column_ProfileID               goquery.Column = "ProfileID"
+	User_Column_ProfileImageID          goquery.Column = "ProfileImageID"
+	User_Column_ProfileImageThumbURL    goquery.Column = "ProfileImageThumbURL"
+	User_Column_ProfileImageURL         goquery.Column = "ProfileImageURL"
+	User_Column_ReasonForLeaving        goquery.Column = "ReasonForLeaving"
+	User_Column_RoleCount               goquery.Column = "RoleCount"
+	User_Column_SMSPhoneNumber          goquery.Column = "SMSPhoneNumber"
+	User_Column_SendSMSNotifications    goquery.Column = "SendSMSNotifications"
+	User_Column_Streak                  goquery.Column = "Streak"
+	User_Column_Timezone                goquery.Column = "Timezone"
+	User_Column_TwoFactorEnabled        goquery.Column = "TwoFactorEnabled"
+	User_Column_TwoFactorLastCompleted  goquery.Column = "TwoFactorLastCompleted"
+	User_Column_UserGroupCount          goquery.Column = "UserGroupCount"
+	User_Column_UserID                  goquery.Column = "UserID"
+	User_Column_UserPrefix              goquery.Column = "UserPrefix"
+	User_Column_Username                goquery.Column = "Username"
 )
 
 var (
 	// User_Columns is a list of all the columns
-	User_Columns = []query.Column{
+	User_Columns = []goquery.Column{
 		User_Column_APIKeyID,
 		User_Column_AccountID,
 		User_Column_AccountRole,
@@ -133,7 +133,7 @@ var (
 	}
 
 	// User_Column_Types maps columns to their string types
-	User_Column_Types = map[query.Column]string{
+	User_Column_Types = map[goquery.Column]string{
 		User_Column_APIKeyID:                "%d",
 		User_Column_AccountID:               "%d",
 		User_Column_AccountRole:             "%d",
@@ -191,7 +191,7 @@ var (
 
 	// Update columns
 	// User_UpdateColumns is a list of all update columns for this model
-	User_UpdateColumns = []query.Column{
+	User_UpdateColumns = []goquery.Column{
 		User_Column_APIKeyID,
 		User_Column_AccountID,
 		User_Column_AccountRole,
@@ -246,7 +246,7 @@ var (
 
 	// Insert columns
 	// User_InsertColumns is a list of all insert columns for this model
-	User_InsertColumns = []query.Column{
+	User_InsertColumns = []goquery.Column{
 		User_Column_APIKeyID,
 		User_Column_AccountID,
 		User_Column_AccountRole,
@@ -302,7 +302,7 @@ var (
 
 	// Primary Key
 	// User_PrimaryKey is the name of the table's primary key
-	User_PrimaryKey query.Column = "UserID"
+	User_PrimaryKey goquery.Column = "UserID"
 )
 
 // User is a data model
@@ -373,21 +373,21 @@ func (c *User) User() int64 {
 } // 68
 
 // User_TableName is the name of the table
-func (c *User) Table_Name() query.TableName {
+func (c *User) Table_Name() goquery.TableName {
 	return User_TableName
 }
 
-func (c *User) Table_Columns() []query.Column {
+func (c *User) Table_Columns() []goquery.Column {
 	return User_Columns
 }
 
 // Table_ColumnTypes returns a map of tableColumn names with their fmt string types
-func (c *User) Table_Column_Types() map[query.Column]string {
+func (c *User) Table_Column_Types() map[goquery.Column]string {
 	return User_Column_Types
 }
 
 // Table_PrimaryKey returns the name of this table's primary key
-func (c *User) Table_PrimaryKey() query.Column {
+func (c *User) Table_PrimaryKey() goquery.Column {
 	return User_PrimaryKey
 }
 
@@ -397,12 +397,12 @@ func (c *User) Table_PrimaryKey_Value() int64 {
 }
 
 // Table_InsertColumns is a list of all insert columns for this model
-func (c *User) Table_InsertColumns() []query.Column {
+func (c *User) Table_InsertColumns() []goquery.Column {
 	return User_InsertColumns
 }
 
 // Table_UpdateColumns is a list of all update columns for this model
-func (c *User) Table_UpdateColumns() []query.Column { // 100
+func (c *User) Table_UpdateColumns() []goquery.Column { // 100
 	return User_UpdateColumns
 }
 
@@ -412,63 +412,63 @@ func (c *User) Table_SchemaName() string {
 }
 
 // FromID returns a FromID query statement
-func (c *User) FromID(db query.IDB, id int64) (query.IModel, error) {
+func (c *User) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 
-	sel := query.Select(c)
+	sel := goquery.Select(c)
 	sel.Fields(
-		query.NewField(query.FieldTypeBasic, User_Column_APIKeyID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountRole),
-		query.NewField(query.FieldTypeBasic, User_Column_AppTheme),
-		query.NewField(query.FieldTypeBasic, User_Column_Coins),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DateActivated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateCreated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateEmailValidated),
-		query.NewField(query.FieldTypeBasic, User_Column_Email),
-		query.NewField(query.FieldTypeBasic, User_Column_EnergyPoints),
-		query.NewField(query.FieldTypeBasic, User_Column_FocusedCollectionID),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowerCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowingCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FullName),
-		query.NewField(query.FieldTypeBasic, User_Column_GoogleSubID),
-		query.NewField(query.FieldTypeBasic, User_Column_ID),
-		query.NewField(query.FieldTypeBasic, User_Column_ImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDeleted),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDisabled),
-		query.NewField(query.FieldTypeBasic, User_Column_IsLocked),
-		query.NewField(query.FieldTypeBasic, User_Column_IsPublic),
-		query.NewField(query.FieldTypeBasic, User_Column_IsService),
-		query.NewField(query.FieldTypeBasic, User_Column_IsShortcutsEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_Language),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLogin),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttempt),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
-		query.NewField(query.FieldTypeBasic, User_Column_LastNotificationDate),
-		query.NewField(query.FieldTypeBasic, User_Column_LastUpdated),
-		query.NewField(query.FieldTypeBasic, User_Column_Level),
-		query.NewField(query.FieldTypeBasic, User_Column_Locale),
-		query.NewField(query.FieldTypeBasic, User_Column_ParentUserID),
-		query.NewField(query.FieldTypeBasic, User_Column_PermissionCount),
-		query.NewField(query.FieldTypeBasic, User_Column_Points),
-		query.NewField(query.FieldTypeBasic, User_Column_PolicyCount),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageThumbURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ReasonForLeaving),
-		query.NewField(query.FieldTypeBasic, User_Column_RoleCount),
-		query.NewField(query.FieldTypeBasic, User_Column_SMSPhoneNumber),
-		query.NewField(query.FieldTypeBasic, User_Column_SendSMSNotifications),
-		query.NewField(query.FieldTypeBasic, User_Column_Streak),
-		query.NewField(query.FieldTypeBasic, User_Column_Timezone),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
-		query.NewField(query.FieldTypeBasic, User_Column_UserGroupCount),
-		query.NewField(query.FieldTypeBasic, User_Column_UserID),
-		query.NewField(query.FieldTypeBasic, User_Column_UserPrefix),
-		query.NewField(query.FieldTypeBasic, User_Column_Username),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountRole),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AppTheme),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Coins),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateActivated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateCreated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateEmailValidated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Email),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_EnergyPoints),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FocusedCollectionID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowerCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowingCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FullName),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_GoogleSubID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDeleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDisabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsLocked),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsPublic),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsService),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsShortcutsEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Language),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLogin),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttempt),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastNotificationDate),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastUpdated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Level),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Locale),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ParentUserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PermissionCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Points),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PolicyCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageThumbURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ReasonForLeaving),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_RoleCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SMSPhoneNumber),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SendSMSNotifications),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Streak),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Timezone),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserGroupCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserPrefix),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Username),
 	)
 	q, e := sel.String()
 	if e != nil {
@@ -549,10 +549,10 @@ func (c *User) String() string {
 }
 
 // Update updates a User record
-func (c *User) Update(db query.IDB) error {
+func (c *User) Update(db goquery.IDB) error {
 	var e error
 	var ql string
-	ql, _ = query.Update(c).
+	ql, _ = goquery.Update(c).
 		Set(User_Column_APIKeyID, c.APIKeyID).
 		Set(User_Column_AccountID, c.AccountID).
 		Set(User_Column_AccountRole, c.AccountRole).
@@ -603,7 +603,7 @@ func (c *User) Update(db query.IDB) error {
 		Set(User_Column_UserGroupCount, c.UserGroupCount).
 		Set(User_Column_UserPrefix, c.UserPrefix).
 		Set(User_Column_Username, c.Username).
-		Where(query.EQ(User_Column_UserID, c.UserID)).
+		Where(goquery.EQ(User_Column_UserID, c.UserID)).
 		String()
 	_, e = db.Exec(ql)
 	if e != nil {
@@ -614,11 +614,11 @@ func (c *User) Update(db query.IDB) error {
 }
 
 // Create inserts a User record
-func (c *User) Create(db query.IDB) error {
+func (c *User) Create(db goquery.IDB) error {
 
 	var e error
 
-	q := query.Insert(c)
+	q := goquery.Insert(c)
 
 	if c.UserID > 0 {
 		q.Set(User_Column_UserID, c.UserID)
@@ -693,11 +693,11 @@ func (c *User) Create(db query.IDB) error {
 }
 
 // Destroy deletes a User record
-func (c *User) Delete(db query.IDB) error {
+func (c *User) Delete(db goquery.IDB) error {
 	var e error
-	ql, _ := query.Delete(c).
+	ql, _ := goquery.Delete(c).
 		Where(
-			query.EQ(User_Column_UserID, c.UserID),
+			goquery.EQ(User_Column_UserID, c.UserID),
 		).String()
 
 	_, e = db.Exec(ql)
@@ -708,65 +708,65 @@ func (c *User) Delete(db query.IDB) error {
 	return e
 }
 
-func (r *User) Raw(db query.IDB, queryRaw string) ([]*User, error) {
+func (r *User) Raw(db goquery.IDB, queryRaw string) ([]*User, error) {
 
 	var e error
 	model := []*User{}
-	sel := query.Select(r)
+	sel := goquery.Select(r)
 	sel.Fields(
-		query.NewField(query.FieldTypeBasic, User_Column_APIKeyID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountRole),
-		query.NewField(query.FieldTypeBasic, User_Column_AppTheme),
-		query.NewField(query.FieldTypeBasic, User_Column_Coins),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DateActivated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateCreated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateEmailValidated),
-		query.NewField(query.FieldTypeBasic, User_Column_Email),
-		query.NewField(query.FieldTypeBasic, User_Column_EnergyPoints),
-		query.NewField(query.FieldTypeBasic, User_Column_FocusedCollectionID),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowerCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowingCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FullName),
-		query.NewField(query.FieldTypeBasic, User_Column_GoogleSubID),
-		query.NewField(query.FieldTypeBasic, User_Column_ID),
-		query.NewField(query.FieldTypeBasic, User_Column_ImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDeleted),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDisabled),
-		query.NewField(query.FieldTypeBasic, User_Column_IsLocked),
-		query.NewField(query.FieldTypeBasic, User_Column_IsPublic),
-		query.NewField(query.FieldTypeBasic, User_Column_IsService),
-		query.NewField(query.FieldTypeBasic, User_Column_IsShortcutsEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_Language),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLogin),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttempt),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
-		query.NewField(query.FieldTypeBasic, User_Column_LastNotificationDate),
-		query.NewField(query.FieldTypeBasic, User_Column_LastUpdated),
-		query.NewField(query.FieldTypeBasic, User_Column_Level),
-		query.NewField(query.FieldTypeBasic, User_Column_Locale),
-		query.NewField(query.FieldTypeBasic, User_Column_ParentUserID),
-		query.NewField(query.FieldTypeBasic, User_Column_PermissionCount),
-		query.NewField(query.FieldTypeBasic, User_Column_Points),
-		query.NewField(query.FieldTypeBasic, User_Column_PolicyCount),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageThumbURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ReasonForLeaving),
-		query.NewField(query.FieldTypeBasic, User_Column_RoleCount),
-		query.NewField(query.FieldTypeBasic, User_Column_SMSPhoneNumber),
-		query.NewField(query.FieldTypeBasic, User_Column_SendSMSNotifications),
-		query.NewField(query.FieldTypeBasic, User_Column_Streak),
-		query.NewField(query.FieldTypeBasic, User_Column_Timezone),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
-		query.NewField(query.FieldTypeBasic, User_Column_UserGroupCount),
-		query.NewField(query.FieldTypeBasic, User_Column_UserID),
-		query.NewField(query.FieldTypeBasic, User_Column_UserPrefix),
-		query.NewField(query.FieldTypeBasic, User_Column_Username),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountRole),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AppTheme),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Coins),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateActivated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateCreated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateEmailValidated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Email),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_EnergyPoints),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FocusedCollectionID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowerCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowingCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FullName),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_GoogleSubID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDeleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDisabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsLocked),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsPublic),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsService),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsShortcutsEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Language),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLogin),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttempt),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastNotificationDate),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastUpdated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Level),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Locale),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ParentUserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PermissionCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Points),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PolicyCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageThumbURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ReasonForLeaving),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_RoleCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SMSPhoneNumber),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SendSMSNotifications),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Streak),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Timezone),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserGroupCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserPrefix),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Username),
 	)
 
 	q, e := sel.String()
@@ -853,19 +853,19 @@ func (r *User) Raw(db query.IDB, queryRaw string) ([]*User, error) {
 }
 
 type IUserDALSelector interface {
-	Select(db query.IDB) IUserDALSelector
+	Select(db goquery.IDB) IUserDALSelector
 }
 
 type UserDALSelector struct {
-	db       query.IDB
-	q        *query.Q
+	db       goquery.IDB
+	q        *goquery.Q
 	isSingle bool
 }
 
-func (r *User) Select(db query.IDB) *UserDALSelector {
+func (r *User) Select(db goquery.IDB) *UserDALSelector {
 	return &UserDALSelector{
 		db: db,
-		q:  query.Select(r),
+		q:  goquery.Select(r),
 	}
 }
 
@@ -874,7 +874,7 @@ func (r *UserDALSelector) Alias(alias string) *UserDALSelector {
 	return r
 }
 
-func (r *UserDALSelector) Where(whereParts ...*query.WherePart) *UserDALSelector {
+func (r *UserDALSelector) Where(whereParts ...*goquery.WherePart) *UserDALSelector {
 	r.q.Where(whereParts...)
 	return r
 }
@@ -884,7 +884,7 @@ func (r *UserDALSelector) Limit(limit, offset int64) *UserDALSelector {
 	return r
 }
 
-func (r *UserDALSelector) OrderBy(col query.Column, dir query.OrderDir) *UserDALSelector {
+func (r *UserDALSelector) OrderBy(col goquery.Column, dir goquery.OrderDir) *UserDALSelector {
 	r.q = r.q.OrderBy(col, dir)
 	return r
 }
@@ -892,59 +892,59 @@ func (r *UserDALSelector) OrderBy(col query.Column, dir query.OrderDir) *UserDAL
 func (r *UserDALSelector) String() (string, error) {
 
 	r.q.Fields(
-		query.NewField(query.FieldTypeBasic, User_Column_APIKeyID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountRole),
-		query.NewField(query.FieldTypeBasic, User_Column_AppTheme),
-		query.NewField(query.FieldTypeBasic, User_Column_Coins),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DateActivated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateCreated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateEmailValidated),
-		query.NewField(query.FieldTypeBasic, User_Column_Email),
-		query.NewField(query.FieldTypeBasic, User_Column_EnergyPoints),
-		query.NewField(query.FieldTypeBasic, User_Column_FocusedCollectionID),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowerCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowingCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FullName),
-		query.NewField(query.FieldTypeBasic, User_Column_GoogleSubID),
-		query.NewField(query.FieldTypeBasic, User_Column_ID),
-		query.NewField(query.FieldTypeBasic, User_Column_ImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDeleted),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDisabled),
-		query.NewField(query.FieldTypeBasic, User_Column_IsLocked),
-		query.NewField(query.FieldTypeBasic, User_Column_IsPublic),
-		query.NewField(query.FieldTypeBasic, User_Column_IsService),
-		query.NewField(query.FieldTypeBasic, User_Column_IsShortcutsEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_Language),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLogin),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttempt),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
-		query.NewField(query.FieldTypeBasic, User_Column_LastNotificationDate),
-		query.NewField(query.FieldTypeBasic, User_Column_LastUpdated),
-		query.NewField(query.FieldTypeBasic, User_Column_Level),
-		query.NewField(query.FieldTypeBasic, User_Column_Locale),
-		query.NewField(query.FieldTypeBasic, User_Column_ParentUserID),
-		query.NewField(query.FieldTypeBasic, User_Column_PermissionCount),
-		query.NewField(query.FieldTypeBasic, User_Column_Points),
-		query.NewField(query.FieldTypeBasic, User_Column_PolicyCount),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageThumbURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ReasonForLeaving),
-		query.NewField(query.FieldTypeBasic, User_Column_RoleCount),
-		query.NewField(query.FieldTypeBasic, User_Column_SMSPhoneNumber),
-		query.NewField(query.FieldTypeBasic, User_Column_SendSMSNotifications),
-		query.NewField(query.FieldTypeBasic, User_Column_Streak),
-		query.NewField(query.FieldTypeBasic, User_Column_Timezone),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
-		query.NewField(query.FieldTypeBasic, User_Column_UserGroupCount),
-		query.NewField(query.FieldTypeBasic, User_Column_UserID),
-		query.NewField(query.FieldTypeBasic, User_Column_UserPrefix),
-		query.NewField(query.FieldTypeBasic, User_Column_Username),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountRole),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AppTheme),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Coins),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateActivated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateCreated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateEmailValidated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Email),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_EnergyPoints),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FocusedCollectionID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowerCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowingCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FullName),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_GoogleSubID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDeleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDisabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsLocked),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsPublic),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsService),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsShortcutsEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Language),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLogin),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttempt),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastNotificationDate),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastUpdated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Level),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Locale),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ParentUserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PermissionCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Points),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PolicyCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageThumbURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ReasonForLeaving),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_RoleCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SMSPhoneNumber),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SendSMSNotifications),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Streak),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Timezone),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserGroupCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserPrefix),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Username),
 	)
 
 	q, e := r.q.String()
@@ -1046,14 +1046,14 @@ func (r *UserDALSelector) Run() ([]*User, error) {
 
 // Counter
 type UserDALCounter struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *User) Count(db query.IDB) *UserDALCounter {
+func (r *User) Count(db goquery.IDB) *UserDALCounter {
 	return &UserDALCounter{
 		db: db,
-		q:  query.Select(r).Count(r.Table_PrimaryKey(), "c"),
+		q:  goquery.Select(r).Count(r.Table_PrimaryKey(), "c"),
 	}
 }
 
@@ -1062,7 +1062,7 @@ func (r *UserDALCounter) Alias(alias string) *UserDALCounter {
 	return r
 }
 
-func (ds *UserDALCounter) Where(whereParts ...*query.WherePart) *UserDALCounter {
+func (ds *UserDALCounter) Where(whereParts ...*goquery.WherePart) *UserDALCounter {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -1090,18 +1090,18 @@ func (ds *UserDALCounter) Run() (int64, error) {
 
 // Summer
 type UserDALSummer struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *User) Sum(db query.IDB, col query.Column) *UserDALSummer {
+func (r *User) Sum(db goquery.IDB, col goquery.Column) *UserDALSummer {
 	return &UserDALSummer{
 		db: db,
-		q:  query.Select(r).Sum(col, "c"),
+		q:  goquery.Select(r).Sum(col, "c"),
 	}
 }
 
-func (ds *UserDALSummer) Where(whereParts ...*query.WherePart) *UserDALSummer {
+func (ds *UserDALSummer) Where(whereParts ...*goquery.WherePart) *UserDALSummer {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -1129,18 +1129,18 @@ func (ds *UserDALSummer) Run() (float64, error) {
 
 // Minner
 type UserDALMinner struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *User) Min(db query.IDB, col query.Column) *UserDALMinner {
+func (r *User) Min(db goquery.IDB, col goquery.Column) *UserDALMinner {
 	return &UserDALMinner{
 		db: db,
-		q:  query.Select(r).Min(col, "c"),
+		q:  goquery.Select(r).Min(col, "c"),
 	}
 }
 
-func (ds *UserDALMinner) Where(whereParts ...*query.WherePart) *UserDALMinner {
+func (ds *UserDALMinner) Where(whereParts ...*goquery.WherePart) *UserDALMinner {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -1168,18 +1168,18 @@ func (ds *UserDALMinner) Run() (float64, error) {
 
 // Maxer
 type UserDALMaxer struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *User) Max(db query.IDB, col query.Column) *UserDALMaxer {
+func (r *User) Max(db goquery.IDB, col goquery.Column) *UserDALMaxer {
 	return &UserDALMaxer{
 		db: db,
-		q:  query.Select(r).Max(col, "c"),
+		q:  goquery.Select(r).Max(col, "c"),
 	}
 }
 
-func (ds *UserDALMaxer) Where(whereParts ...*query.WherePart) *UserDALMaxer {
+func (ds *UserDALMaxer) Where(whereParts ...*goquery.WherePart) *UserDALMaxer {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -1206,14 +1206,14 @@ func (ds *UserDALMaxer) Run() (float64, error) {
 }
 
 type UserDALGetter struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *User) Get(db query.IDB) *UserDALGetter {
+func (r *User) Get(db goquery.IDB) *UserDALGetter {
 	return &UserDALGetter{
 		db: db,
-		q:  query.Select(r),
+		q:  goquery.Select(r),
 	}
 }
 
@@ -1222,12 +1222,12 @@ func (r *UserDALGetter) Alias(alias string) *UserDALGetter {
 	return r
 }
 
-func (ds *UserDALGetter) Where(whereParts ...*query.WherePart) *UserDALGetter {
+func (ds *UserDALGetter) Where(whereParts ...*goquery.WherePart) *UserDALGetter {
 	ds.q.Where(whereParts...)
 	return ds
 }
 
-func (ds *UserDALGetter) OrderBy(col query.Column, dir query.OrderDir) *UserDALGetter {
+func (ds *UserDALGetter) OrderBy(col goquery.Column, dir goquery.OrderDir) *UserDALGetter {
 	ds.q = ds.q.OrderBy(col, dir)
 	return ds
 }
@@ -1237,59 +1237,59 @@ func (ds *UserDALGetter) Run() (*User, error) {
 	model := &User{}
 
 	ds.q.Fields(
-		query.NewField(query.FieldTypeBasic, User_Column_APIKeyID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountID),
-		query.NewField(query.FieldTypeBasic, User_Column_AccountRole),
-		query.NewField(query.FieldTypeBasic, User_Column_AppTheme),
-		query.NewField(query.FieldTypeBasic, User_Column_Coins),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
-		query.NewField(query.FieldTypeBasic, User_Column_DateActivated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateCreated),
-		query.NewField(query.FieldTypeBasic, User_Column_DateEmailValidated),
-		query.NewField(query.FieldTypeBasic, User_Column_Email),
-		query.NewField(query.FieldTypeBasic, User_Column_EnergyPoints),
-		query.NewField(query.FieldTypeBasic, User_Column_FocusedCollectionID),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowerCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FollowingCount),
-		query.NewField(query.FieldTypeBasic, User_Column_FullName),
-		query.NewField(query.FieldTypeBasic, User_Column_GoogleSubID),
-		query.NewField(query.FieldTypeBasic, User_Column_ID),
-		query.NewField(query.FieldTypeBasic, User_Column_ImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDeleted),
-		query.NewField(query.FieldTypeBasic, User_Column_IsDisabled),
-		query.NewField(query.FieldTypeBasic, User_Column_IsLocked),
-		query.NewField(query.FieldTypeBasic, User_Column_IsPublic),
-		query.NewField(query.FieldTypeBasic, User_Column_IsService),
-		query.NewField(query.FieldTypeBasic, User_Column_IsShortcutsEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_Language),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLogin),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttempt),
-		query.NewField(query.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
-		query.NewField(query.FieldTypeBasic, User_Column_LastNotificationDate),
-		query.NewField(query.FieldTypeBasic, User_Column_LastUpdated),
-		query.NewField(query.FieldTypeBasic, User_Column_Level),
-		query.NewField(query.FieldTypeBasic, User_Column_Locale),
-		query.NewField(query.FieldTypeBasic, User_Column_ParentUserID),
-		query.NewField(query.FieldTypeBasic, User_Column_PermissionCount),
-		query.NewField(query.FieldTypeBasic, User_Column_Points),
-		query.NewField(query.FieldTypeBasic, User_Column_PolicyCount),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageID),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageThumbURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ProfileImageURL),
-		query.NewField(query.FieldTypeBasic, User_Column_ReasonForLeaving),
-		query.NewField(query.FieldTypeBasic, User_Column_RoleCount),
-		query.NewField(query.FieldTypeBasic, User_Column_SMSPhoneNumber),
-		query.NewField(query.FieldTypeBasic, User_Column_SendSMSNotifications),
-		query.NewField(query.FieldTypeBasic, User_Column_Streak),
-		query.NewField(query.FieldTypeBasic, User_Column_Timezone),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorEnabled),
-		query.NewField(query.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
-		query.NewField(query.FieldTypeBasic, User_Column_UserGroupCount),
-		query.NewField(query.FieldTypeBasic, User_Column_UserID),
-		query.NewField(query.FieldTypeBasic, User_Column_UserPrefix),
-		query.NewField(query.FieldTypeBasic, User_Column_Username),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountRole),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_AppTheme),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Coins),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyStudiedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DailyTestedTermsGoal),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateActivated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateCreated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_DateEmailValidated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Email),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_EnergyPoints),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FocusedCollectionID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowerCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FollowingCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_FullName),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_GoogleSubID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDeleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsDisabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsLocked),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsPublic),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsService),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_IsShortcutsEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Language),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLogin),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttempt),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastLoginAttemptCounter),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastNotificationDate),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_LastUpdated),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Level),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Locale),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ParentUserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PermissionCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Points),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_PolicyCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageThumbURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ProfileImageURL),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_ReasonForLeaving),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_RoleCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SMSPhoneNumber),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_SendSMSNotifications),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Streak),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Timezone),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorEnabled),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_TwoFactorLastCompleted),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserGroupCount),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserID),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_UserPrefix),
+		goquery.NewField(goquery.FieldTypeBasic, User_Column_Username),
 	)
 	q, e := ds.q.String()
 	if e != nil {

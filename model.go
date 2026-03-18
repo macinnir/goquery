@@ -1,4 +1,4 @@
-package query
+package goquery
 
 type IModel interface {
 	Table_Name() TableName

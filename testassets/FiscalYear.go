@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/macinnir/query"
+	goquery "github.com/macinnir/query"
 )
 
 const (
@@ -14,34 +14,34 @@ const (
 	FiscalYear_SchemaName = "rfq"
 
 	// FiscalYear_TableName is the name of the table
-	FiscalYear_TableName query.TableName = "FiscalYear"
+	FiscalYear_TableName goquery.TableName = "FiscalYear"
 
 	// Columns
-	FiscalYear_Column_FiscalYearID    query.Column = "FiscalYearID"
-	FiscalYear_Column_FiscalYearKey   query.Column = "FiscalYearKey"
-	FiscalYear_Column_Year            query.Column = "Year"
-	FiscalYear_Column_DateFrom        query.Column = "DateFrom"
-	FiscalYear_Column_DateTo          query.Column = "DateTo"
-	FiscalYear_Column_DateCreated     query.Column = "DateCreated"
-	FiscalYear_Column_IsDeleted       query.Column = "IsDeleted"
-	FiscalYear_Column_TotalFiscalDays query.Column = "TotalFiscalDays"
-	FiscalYear_Column_IsLocked        query.Column = "IsLocked"
+	FiscalYear_Column_FiscalYearID    goquery.Column = "FiscalYearID"
+	FiscalYear_Column_FiscalYearKey   goquery.Column = "FiscalYearKey"
+	FiscalYear_Column_Year            goquery.Column = "Year"
+	FiscalYear_Column_DateFrom        goquery.Column = "DateFrom"
+	FiscalYear_Column_DateTo          goquery.Column = "DateTo"
+	FiscalYear_Column_DateCreated     goquery.Column = "DateCreated"
+	FiscalYear_Column_IsDeleted       goquery.Column = "IsDeleted"
+	FiscalYear_Column_TotalFiscalDays goquery.Column = "TotalFiscalDays"
+	FiscalYear_Column_IsLocked        goquery.Column = "IsLocked"
 )
 
 var (
 	// FiscalYear_Columns is a list of all the columns
-	FiscalYear_Columns = []query.Column{
+	FiscalYear_Columns = []goquery.Column{
 		FiscalYear_Column_FiscalYearID, FiscalYear_Column_FiscalYearKey, FiscalYear_Column_Year, FiscalYear_Column_DateFrom, FiscalYear_Column_DateTo, FiscalYear_Column_DateCreated, FiscalYear_Column_IsDeleted, FiscalYear_Column_TotalFiscalDays, FiscalYear_Column_IsLocked}
 
 	// FiscalYear_Column_Types maps columns to their string types
-	FiscalYear_Column_Types = map[query.Column]string{
+	FiscalYear_Column_Types = map[goquery.Column]string{
 		FiscalYear_Column_FiscalYearID: "%d", FiscalYear_Column_FiscalYearKey: "%d", FiscalYear_Column_Year: "%d", FiscalYear_Column_DateFrom: "%d", FiscalYear_Column_DateTo: "%d", FiscalYear_Column_DateCreated: "%d", FiscalYear_Column_IsDeleted: "%d", FiscalYear_Column_TotalFiscalDays: "%d", FiscalYear_Column_IsLocked: "%d"}
 	// FiscalYear_UpdateColumns is a list of all update columns for this model
-	FiscalYear_UpdateColumns = []query.Column{FiscalYear_Column_FiscalYearKey, FiscalYear_Column_Year, FiscalYear_Column_DateFrom, FiscalYear_Column_DateTo, FiscalYear_Column_IsDeleted, FiscalYear_Column_TotalFiscalDays, FiscalYear_Column_IsLocked}
+	FiscalYear_UpdateColumns = []goquery.Column{FiscalYear_Column_FiscalYearKey, FiscalYear_Column_Year, FiscalYear_Column_DateFrom, FiscalYear_Column_DateTo, FiscalYear_Column_IsDeleted, FiscalYear_Column_TotalFiscalDays, FiscalYear_Column_IsLocked}
 	// FiscalYear_InsertColumns is a list of all insert columns for this model
-	FiscalYear_InsertColumns = []query.Column{FiscalYear_Column_FiscalYearKey, FiscalYear_Column_Year, FiscalYear_Column_DateFrom, FiscalYear_Column_DateTo, FiscalYear_Column_DateCreated, FiscalYear_Column_TotalFiscalDays, FiscalYear_Column_IsLocked}
+	FiscalYear_InsertColumns = []goquery.Column{FiscalYear_Column_FiscalYearKey, FiscalYear_Column_Year, FiscalYear_Column_DateFrom, FiscalYear_Column_DateTo, FiscalYear_Column_DateCreated, FiscalYear_Column_TotalFiscalDays, FiscalYear_Column_IsLocked}
 	// FiscalYear_PrimaryKey is the name of the table's primary key
-	FiscalYear_PrimaryKey query.Column = "FiscalYearID"
+	FiscalYear_PrimaryKey goquery.Column = "FiscalYearID"
 )
 
 // FiscalYear is a `FiscalYear` data model
@@ -58,21 +58,21 @@ type FiscalYear struct {
 }
 
 // FiscalYear_TableName is the name of the table
-func (c *FiscalYear) Table_Name() query.TableName {
+func (c *FiscalYear) Table_Name() goquery.TableName {
 	return FiscalYear_TableName
 }
 
-func (c *FiscalYear) Table_Columns() []query.Column {
+func (c *FiscalYear) Table_Columns() []goquery.Column {
 	return FiscalYear_Columns
 }
 
 // Table_ColumnTypes returns a map of tableColumn names with their fmt string types
-func (c *FiscalYear) Table_Column_Types() map[query.Column]string {
+func (c *FiscalYear) Table_Column_Types() map[goquery.Column]string {
 	return FiscalYear_Column_Types
 }
 
 // Table_PrimaryKey returns the name of this table's primary key
-func (c *FiscalYear) Table_PrimaryKey() query.Column {
+func (c *FiscalYear) Table_PrimaryKey() goquery.Column {
 	return FiscalYear_PrimaryKey
 }
 
@@ -82,12 +82,12 @@ func (c *FiscalYear) Table_PrimaryKey_Value() int64 {
 }
 
 // Table_InsertColumns is a list of all insert columns for this model
-func (c *FiscalYear) Table_InsertColumns() []query.Column {
+func (c *FiscalYear) Table_InsertColumns() []goquery.Column {
 	return FiscalYear_InsertColumns
 }
 
 // Table_UpdateColumns is a list of all update columns for this model
-func (c *FiscalYear) Table_UpdateColumns() []query.Column {
+func (c *FiscalYear) Table_UpdateColumns() []goquery.Column {
 	return FiscalYear_UpdateColumns
 }
 
@@ -97,7 +97,7 @@ func (c *FiscalYear) Table_SchemaName() string {
 }
 
 // FromID returns a FromID query statement
-func (c *FiscalYear) FromID(db query.IDB, id int64) (query.IModel, error) {
+func (c *FiscalYear) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 	model := &FiscalYear{}
 	return model, nil
 }
@@ -109,10 +109,10 @@ func (c *FiscalYear) String() string {
 }
 
 // Update updates a FiscalYear record
-func (c *FiscalYear) Update(db query.IDB) error {
+func (c *FiscalYear) Update(db goquery.IDB) error {
 	var e error
 	var ql string
-	ql, _ = query.Update(c).
+	ql, _ = goquery.Update(c).
 		Set(FiscalYear_Column_FiscalYearKey, c.FiscalYearKey).
 		Set(FiscalYear_Column_Year, c.Year).
 		Set(FiscalYear_Column_DateFrom, c.DateFrom).
@@ -120,7 +120,7 @@ func (c *FiscalYear) Update(db query.IDB) error {
 		Set(FiscalYear_Column_IsDeleted, c.IsDeleted).
 		Set(FiscalYear_Column_TotalFiscalDays, c.TotalFiscalDays).
 		Set(FiscalYear_Column_IsLocked, c.IsLocked).
-		Where(query.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID)).
+		Where(goquery.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID)).
 		String()
 
 	_, e = db.Exec(ql)
@@ -132,10 +132,10 @@ func (c *FiscalYear) Update(db query.IDB) error {
 }
 
 // Create inserts a FiscalYear record
-func (c *FiscalYear) Create(db query.IDB) error {
+func (c *FiscalYear) Create(db goquery.IDB) error {
 
 	var e error
-	q := query.Insert(c)
+	q := goquery.Insert(c)
 
 	if c.FiscalYearID > 0 {
 		q.Set(FiscalYear_Column_FiscalYearID, c.FiscalYearID)
@@ -164,11 +164,11 @@ func (c *FiscalYear) Create(db query.IDB) error {
 }
 
 // Destroy deletes a FiscalYear record
-func (c *FiscalYear) Delete(db query.IDB) error {
+func (c *FiscalYear) Delete(db goquery.IDB) error {
 	var e error
-	ql, _ := query.Delete(c).
+	ql, _ := goquery.Delete(c).
 		Where(
-			query.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID),
+			goquery.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID),
 		).String()
 
 	_, e = db.Exec(ql)
@@ -179,7 +179,7 @@ func (c *FiscalYear) Delete(db query.IDB) error {
 	return e
 }
 
-func (r *FiscalYear) Raw(db query.IDB, queryRaw string) ([]*FiscalYear, error) {
+func (r *FiscalYear) Raw(db goquery.IDB, queryRaw string) ([]*FiscalYear, error) {
 
 	// var e error
 	model := []*FiscalYear{}
@@ -196,15 +196,15 @@ func (r *FiscalYear) Raw(db query.IDB, queryRaw string) ([]*FiscalYear, error) {
 }
 
 type FiscalYearDALSelector struct {
-	db       query.IDB
-	q        *query.Q
+	db       goquery.IDB
+	q        *goquery.Q
 	isSingle bool
 }
 
-func (r *FiscalYear) Select(db query.IDB) *FiscalYearDALSelector {
+func (r *FiscalYear) Select(db goquery.IDB) *FiscalYearDALSelector {
 	return &FiscalYearDALSelector{
 		db: db,
-		q:  query.Select(r),
+		q:  goquery.Select(r),
 	}
 }
 
@@ -213,17 +213,17 @@ func (r *FiscalYearDALSelector) Alias(alias string) *FiscalYearDALSelector {
 	return r
 }
 
-func (r *FiscalYearDALSelector) Sum(fieldName query.Column, fieldAlias string) *FiscalYearDALSelector {
+func (r *FiscalYearDALSelector) Sum(fieldName goquery.Column, fieldAlias string) *FiscalYearDALSelector {
 	r.q.Sum(fieldName, fieldAlias)
 	return r
 }
 
-func (r *FiscalYearDALSelector) Count(fieldName query.Column, fieldAlias string) *FiscalYearDALSelector {
+func (r *FiscalYearDALSelector) Count(fieldName goquery.Column, fieldAlias string) *FiscalYearDALSelector {
 	r.q.Count(fieldName, fieldAlias)
 	return r
 }
 
-func (r *FiscalYearDALSelector) Where(whereParts ...*query.WherePart) *FiscalYearDALSelector {
+func (r *FiscalYearDALSelector) Where(whereParts ...*goquery.WherePart) *FiscalYearDALSelector {
 	r.q.Where(whereParts...)
 	return r
 }
@@ -233,7 +233,7 @@ func (r *FiscalYearDALSelector) Limit(limit, offset int64) *FiscalYearDALSelecto
 	return r
 }
 
-func (r *FiscalYearDALSelector) OrderBy(col query.Column, dir query.OrderDir) *FiscalYearDALSelector {
+func (r *FiscalYearDALSelector) OrderBy(col goquery.Column, dir goquery.OrderDir) *FiscalYearDALSelector {
 	r.q = r.q.OrderBy(col, dir)
 	return r
 }
@@ -259,14 +259,14 @@ func (r *FiscalYearDALSelector) Run() ([]*FiscalYear, error) {
 
 // Counter
 type FiscalYearDALCounter struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *FiscalYear) Count(db query.IDB) *FiscalYearDALCounter {
+func (r *FiscalYear) Count(db goquery.IDB) *FiscalYearDALCounter {
 	return &FiscalYearDALCounter{
 		db: db,
-		q:  query.Select(r).Count(r.Table_PrimaryKey(), "c"),
+		q:  goquery.Select(r).Count(r.Table_PrimaryKey(), "c"),
 	}
 }
 
@@ -275,7 +275,7 @@ func (r *FiscalYearDALCounter) Alias(alias string) *FiscalYearDALCounter {
 	return r
 }
 
-func (ds *FiscalYearDALCounter) Where(whereParts ...*query.WherePart) *FiscalYearDALCounter {
+func (ds *FiscalYearDALCounter) Where(whereParts ...*goquery.WherePart) *FiscalYearDALCounter {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -302,18 +302,18 @@ func (ds *FiscalYearDALCounter) Run() (int64, error) {
 
 // Summer
 type FiscalYearDALSummer struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *FiscalYear) Sum(db query.IDB, col query.Column) *FiscalYearDALSummer {
+func (r *FiscalYear) Sum(db goquery.IDB, col goquery.Column) *FiscalYearDALSummer {
 	return &FiscalYearDALSummer{
 		db: db,
-		q:  query.Select(r).Sum(col, "c"),
+		q:  goquery.Select(r).Sum(col, "c"),
 	}
 }
 
-func (ds *FiscalYearDALSummer) Where(whereParts ...*query.WherePart) *FiscalYearDALSummer {
+func (ds *FiscalYearDALSummer) Where(whereParts ...*goquery.WherePart) *FiscalYearDALSummer {
 	ds.q.Where(whereParts...)
 	return ds
 }
@@ -338,14 +338,14 @@ func (ds *FiscalYearDALSummer) Run() (float64, error) {
 }
 
 type FiscalYearDALGetter struct {
-	db query.IDB
-	q  *query.Q
+	db goquery.IDB
+	q  *goquery.Q
 }
 
-func (r *FiscalYear) Get(db query.IDB) *FiscalYearDALGetter {
+func (r *FiscalYear) Get(db goquery.IDB) *FiscalYearDALGetter {
 	return &FiscalYearDALGetter{
 		db: db,
-		q:  query.Select(r),
+		q:  goquery.Select(r),
 	}
 }
 
@@ -354,12 +354,12 @@ func (r *FiscalYearDALGetter) Alias(alias string) *FiscalYearDALGetter {
 	return r
 }
 
-func (ds *FiscalYearDALGetter) Where(whereParts ...*query.WherePart) *FiscalYearDALGetter {
+func (ds *FiscalYearDALGetter) Where(whereParts ...*goquery.WherePart) *FiscalYearDALGetter {
 	ds.q.Where(whereParts...)
 	return ds
 }
 
-func (ds *FiscalYearDALGetter) OrderBy(col query.Column, dir query.OrderDir) *FiscalYearDALGetter {
+func (ds *FiscalYearDALGetter) OrderBy(col goquery.Column, dir goquery.OrderDir) *FiscalYearDALGetter {
 	ds.q = ds.q.OrderBy(col, dir)
 	return ds
 }

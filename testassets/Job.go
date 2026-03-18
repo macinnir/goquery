@@ -3,58 +3,58 @@ package testassets
 import (
 	"encoding/json"
 
-	"github.com/macinnir/query"
+	goquery "github.com/macinnir/query"
 	"gopkg.in/guregu/null.v3"
 )
 
 const (
-	Job_TableName query.TableName = "Job"
+	Job_TableName goquery.TableName = "Job"
 
 	// Columns
-	Job_Column_JobID                  query.Column = "JobID"
-	Job_Column_DateCreated            query.Column = "DateCreated"
-	Job_Column_LastUpdated            query.Column = "LastUpdated"
-	Job_Column_IsDeleted              query.Column = "IsDeleted"
-	Job_Column_QuoteNumberID          query.Column = "QuoteNumberID"
-	Job_Column_CustomerID             query.Column = "CustomerID"
-	Job_Column_AwardDate              query.Column = "AwardDate"
-	Job_Column_AwardDateString        query.Column = "AwardDateString"
-	Job_Column_QuoteID                query.Column = "QuoteID"
-	Job_Column_Description            query.Column = "Description"
-	Job_Column_CustomerContactID      query.Column = "CustomerContactID"
-	Job_Column_Notes                  query.Column = "Notes"
-	Job_Column_CustomerPO2SentTo      query.Column = "CustomerPO2SentTo"
-	Job_Column_ThirdPartyName         query.Column = "ThirdPartyName"
-	Job_Column_CustomerPO2Number      query.Column = "CustomerPO2Number"
-	Job_Column_BillingAddressZip      query.Column = "BillingAddressZip"
-	Job_Column_BillingAddress         query.Column = "BillingAddress"
-	Job_Column_BillingAddressState    query.Column = "BillingAddressState"
-	Job_Column_CustomerPO1SentTo      query.Column = "CustomerPO1SentTo"
-	Job_Column_ProjectCost            query.Column = "ProjectCost"
-	Job_Column_CustomerPO1Number      query.Column = "CustomerPO1Number"
-	Job_Column_ThirdPartySplitPercent query.Column = "ThirdPartySplitPercent"
-	Job_Column_CommissionTypeID       query.Column = "CommissionTypeID"
-	Job_Column_GrossMarginPercent     query.Column = "GrossMarginPercent"
-	Job_Column_TotalPrice             query.Column = "TotalPrice"
-	Job_Column_IsThirdPartySplit      query.Column = "IsThirdPartySplit"
-	Job_Column_GrossProfit            query.Column = "GrossProfit"
-	Job_Column_BillingAddressCity     query.Column = "BillingAddressCity"
-	Job_Column_RemainingGrossProfit   query.Column = "RemainingGrossProfit"
-	Job_Column_IsAddFreight           query.Column = "IsAddFreight"
-	Job_Column_JobNumberString        query.Column = "JobNumberString"
-	Job_Column_ThirdPartyCommission   query.Column = "ThirdPartyCommission"
-	Job_Column_ShippingAddressZip     query.Column = "ShippingAddressZip"
-	Job_Column_ShippingAddress        query.Column = "ShippingAddress"
-	Job_Column_ShippingAddressCity    query.Column = "ShippingAddressCity"
-	Job_Column_ShippingAddressState   query.Column = "ShippingAddressState"
-	Job_Column_Sales1                 query.Column = "Sales1"
-	Job_Column_BidTypeID              query.Column = "BidTypeID"
-	Job_Column_Vendor1ID              query.Column = "Vendor1ID"
-	Job_Column_MarketID               query.Column = "MarketID"
-	Job_Column_Vendor2ID              query.Column = "Vendor2ID"
-	Job_Column_Sales2                 query.Column = "Sales2"
-	Job_Column_JEFDate                query.Column = "JEFDate"
-	Job_Column_JEFDateString          query.Column = "JEFDateString"
+	Job_Column_JobID                  goquery.Column = "JobID"
+	Job_Column_DateCreated            goquery.Column = "DateCreated"
+	Job_Column_LastUpdated            goquery.Column = "LastUpdated"
+	Job_Column_IsDeleted              goquery.Column = "IsDeleted"
+	Job_Column_QuoteNumberID          goquery.Column = "QuoteNumberID"
+	Job_Column_CustomerID             goquery.Column = "CustomerID"
+	Job_Column_AwardDate              goquery.Column = "AwardDate"
+	Job_Column_AwardDateString        goquery.Column = "AwardDateString"
+	Job_Column_QuoteID                goquery.Column = "QuoteID"
+	Job_Column_Description            goquery.Column = "Description"
+	Job_Column_CustomerContactID      goquery.Column = "CustomerContactID"
+	Job_Column_Notes                  goquery.Column = "Notes"
+	Job_Column_CustomerPO2SentTo      goquery.Column = "CustomerPO2SentTo"
+	Job_Column_ThirdPartyName         goquery.Column = "ThirdPartyName"
+	Job_Column_CustomerPO2Number      goquery.Column = "CustomerPO2Number"
+	Job_Column_BillingAddressZip      goquery.Column = "BillingAddressZip"
+	Job_Column_BillingAddress         goquery.Column = "BillingAddress"
+	Job_Column_BillingAddressState    goquery.Column = "BillingAddressState"
+	Job_Column_CustomerPO1SentTo      goquery.Column = "CustomerPO1SentTo"
+	Job_Column_ProjectCost            goquery.Column = "ProjectCost"
+	Job_Column_CustomerPO1Number      goquery.Column = "CustomerPO1Number"
+	Job_Column_ThirdPartySplitPercent goquery.Column = "ThirdPartySplitPercent"
+	Job_Column_CommissionTypeID       goquery.Column = "CommissionTypeID"
+	Job_Column_GrossMarginPercent     goquery.Column = "GrossMarginPercent"
+	Job_Column_TotalPrice             goquery.Column = "TotalPrice"
+	Job_Column_IsThirdPartySplit      goquery.Column = "IsThirdPartySplit"
+	Job_Column_GrossProfit            goquery.Column = "GrossProfit"
+	Job_Column_BillingAddressCity     goquery.Column = "BillingAddressCity"
+	Job_Column_RemainingGrossProfit   goquery.Column = "RemainingGrossProfit"
+	Job_Column_IsAddFreight           goquery.Column = "IsAddFreight"
+	Job_Column_JobNumberString        goquery.Column = "JobNumberString"
+	Job_Column_ThirdPartyCommission   goquery.Column = "ThirdPartyCommission"
+	Job_Column_ShippingAddressZip     goquery.Column = "ShippingAddressZip"
+	Job_Column_ShippingAddress        goquery.Column = "ShippingAddress"
+	Job_Column_ShippingAddressCity    goquery.Column = "ShippingAddressCity"
+	Job_Column_ShippingAddressState   goquery.Column = "ShippingAddressState"
+	Job_Column_Sales1                 goquery.Column = "Sales1"
+	Job_Column_BidTypeID              goquery.Column = "BidTypeID"
+	Job_Column_Vendor1ID              goquery.Column = "Vendor1ID"
+	Job_Column_MarketID               goquery.Column = "MarketID"
+	Job_Column_Vendor2ID              goquery.Column = "Vendor2ID"
+	Job_Column_Sales2                 goquery.Column = "Sales2"
+	Job_Column_JEFDate                goquery.Column = "JEFDate"
+	Job_Column_JEFDateString          goquery.Column = "JEFDateString"
 )
 
 // Job is a `Job` data model
@@ -106,12 +106,12 @@ type Job struct {
 }
 
 // Comment_TableName is the name of the table
-func (c *Job) Table_Name() query.TableName {
+func (c *Job) Table_Name() goquery.TableName {
 	return Job_TableName
 }
 
-func (c *Job) Table_Columns() []query.Column {
-	return []query.Column{
+func (c *Job) Table_Columns() []goquery.Column {
+	return []goquery.Column{
 		Job_Column_JobID,
 		Job_Column_DateCreated,
 		Job_Column_LastUpdated,
@@ -159,8 +159,8 @@ func (c *Job) Table_Columns() []query.Column {
 	}
 }
 
-func (c *Job) Table_Column_Types() map[query.Column]string {
-	return map[query.Column]string{
+func (c *Job) Table_Column_Types() map[goquery.Column]string {
+	return map[goquery.Column]string{
 		Job_Column_JobID:                  "%d",
 		Job_Column_DateCreated:            "%d",
 		Job_Column_LastUpdated:            "%d",
@@ -208,8 +208,8 @@ func (c *Job) Table_Column_Types() map[query.Column]string {
 	}
 }
 
-func (c *Job) Table_Column_Values() map[query.Column]interface{} {
-	return map[query.Column]interface{}{
+func (c *Job) Table_Column_Values() map[goquery.Column]interface{} {
+	return map[goquery.Column]interface{}{
 		Job_Column_JobID:                  c.JobID,
 		Job_Column_DateCreated:            c.DateCreated,
 		Job_Column_LastUpdated:            c.LastUpdated,
@@ -258,7 +258,7 @@ func (c *Job) Table_Column_Values() map[query.Column]interface{} {
 }
 
 // Comment_PrimaryKey is the name of the table's primary key
-func (c *Job) Table_PrimaryKey() query.Column {
+func (c *Job) Table_PrimaryKey() goquery.Column {
 	return Job_Column_JobID
 }
 
@@ -268,14 +268,14 @@ func (c *Job) Table_PrimaryKey_Value() int64 {
 
 // Comment_InsertColumns is a list of all insert columns for this model
 // TODO
-func (c *Job) Table_InsertColumns() []query.Column {
-	return []query.Column{}
+func (c *Job) Table_InsertColumns() []goquery.Column {
+	return []goquery.Column{}
 }
 
 // Comment_UpdateColumns is a list of all update columns for this model
 // TODO
-func (c *Job) Table_UpdateColumns() []query.Column {
-	return []query.Column{}
+func (c *Job) Table_UpdateColumns() []goquery.Column {
+	return []goquery.Column{}
 }
 
 func (c *Job) String() string {
@@ -283,18 +283,18 @@ func (c *Job) String() string {
 	return string(str)
 }
 
-func (c *Job) Create(db query.IDB) error {
+func (c *Job) Create(db goquery.IDB) error {
 	return nil
 }
 
-func (c *Job) Update(db query.IDB) error {
+func (c *Job) Update(db goquery.IDB) error {
 	return nil
 }
 
-func (c *Job) Delete(db query.IDB) error {
+func (c *Job) Delete(db goquery.IDB) error {
 	return nil
 }
 
-func (c *Job) FromID(db query.IDB, id int64) (query.IModel, error) {
+func (c *Job) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 	return nil, nil
 }
