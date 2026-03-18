@@ -1,5 +1,7 @@
 # Query 
 
+[![Go](https://github.com/macinnir/goquery/actions/workflows/go.yml/badge.svg)](https://github.com/macinnir/goquery/actions/workflows/go.yml)
+
 # Performance 
 
 ```
