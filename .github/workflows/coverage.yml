@@ -3,7 +3,7 @@ name: Generate code coverage badge
 on:
   push:
     branches:
-      - main # or your default branch
+      - main
 
 jobs:
   test:
@@ -12,7 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Required for the action to commit changes
+        fetch-depth: 0
 
     - name: Setup go
       uses: actions/setup-go@v4
@@ -22,15 +22,31 @@ jobs:
     - name: Run Test
       run: |
         go test -v ./... -covermode=count -coverprofile=coverage.out
+        go tool cover -func=coverage.out -o=coverage.out
 
     - name: Go Coverage Badge
       uses: tj-actions/coverage-badge-go@v3
       with:
         filename: coverage.out # Pass the coverage profile file
 
-    - name: Commit changes
-      uses: stefanzweifel/git-auto-commit-action@v5
+    - name: Verify Changed Files
+      uses: tf-actions/verify-changed-files@v16
+      id: verify-changed-files
       with:
-        commit_message: chore: Updated coverage badge.
         files: README.md
+
+    - name: Commit changes
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
+      run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "chore: Updated coverage badge."
+
+    - name: Push changes
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+          github_token: ${{ github.token }}
+          branch: ${{ github.head_ref }}
 
