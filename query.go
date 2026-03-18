@@ -4,29 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-
-	"github.com/macinnir/dvc/core/lib/utils/db"
 )
 
 type Column string
 type TableName string
-
-type IModel interface {
-	Table_Name() TableName
-	Table_Columns() []Column
-	Table_PrimaryKey() Column
-	Table_PrimaryKey_Value() int64
-	Table_InsertColumns() []Column
-	Table_UpdateColumns() []Column
-	Table_Column_Types() map[Column]string
-	String() string
-	Update(db db.IDB) error
-	Create(db db.IDB) error
-	Delete(db db.IDB) error
-	FromID(db db.IDB, id int64) (IModel, error)
-
-	// Table_Column_Values() map[string]interface{}
-}
 
 type QueryType int
 
@@ -38,32 +19,6 @@ const (
 	QueryTypeDelete
 	QueryTypeInsert
 )
-
-type OrderDir int
-
-const (
-	OrderDirASC OrderDir = iota
-	OrderDirDESC
-)
-
-func OrderDirFromString(s string) OrderDir {
-	s = strings.ToLower(s)
-	if s == "desc" {
-		return OrderDirDESC
-	}
-
-	return OrderDirASC
-}
-
-func (q OrderDir) String() string {
-	switch q {
-	case OrderDirASC:
-		return "ASC"
-	default:
-		// OrderDirDESC
-		return "DESC"
-	}
-}
 
 type FieldType int
 
@@ -438,27 +393,21 @@ func (q *Q) String() (string, error) {
 		}
 
 		sb.WriteString(" FROM")
-		// sql += fmt.Sprintf("SEsLECT %s FROM", fields)
 	case QueryTypeInsert:
 		sb.WriteString("INSERT INTO")
-		// sql += "INSERT INTO"
 		q.alias = ""
 	case QueryTypeUpdate:
 		sb.WriteString("UPDATE")
-		// sql += "UPDATE"
 		q.alias = ""
 	case QueryTypeDelete:
 		sb.WriteString("DELETE FROM")
-		// sql += "DELETE FROM"s
 		q.alias = ""
 	}
 
 	sb.WriteString(" `" + string(q.model.Table_Name()) + "`")
-	// sql += " `" + q.model.Table_Name() + "`"
 
 	if len(q.alias) > 0 && q.queryType == QueryTypeSelect {
 		sb.WriteString(" `" + q.alias + "`")
-		// sql += " `" + q.alias + "`"
 	}
 
 	if q.queryType == QueryTypeUpdate && len(q.sets) > 0 {
@@ -487,7 +436,6 @@ func (q *Q) String() (string, error) {
 		}
 
 		sb.WriteString(strings.Join(setStmts, ", "))
-		// sql += strings.Join(setStmts, ", ")
 	}
 
 	if q.queryType == QueryTypeInsert && len(q.sets) > 0 {
@@ -523,10 +471,6 @@ func (q *Q) String() (string, error) {
 			sb.WriteString(" WHERE ")
 			sb.WriteString(whereClause)
 		}
-		// fmt.Println(q.where.WhereParts, q.queryType)
-		// q.errorInvalidColumn(QUERY_ERROR_EMPTY_WHERE_CLAUSE, "WHERE", "")
-		// q.error(fmt.Sprintf("EMPTY_WHERE_CLAUSE: `%s`", q.model.Table_Name()))
-
 	}
 
 	if q.queryType == QueryTypeSelect && len(q.orderBy) > 0 {
@@ -545,12 +489,10 @@ func (q *Q) String() (string, error) {
 
 	if q.limit > 0 {
 		sb.WriteString(" LIMIT " + fmt.Sprint(q.limit))
-		// sql += fmt.Sprintf(" LIMIT %d", q.limit)
 	}
 
 	if q.offset > 0 {
 		sb.WriteString(" OFFSET " + fmt.Sprint(q.offset))
-		// sql += fmt.Sprintf(" OFFSET %d", q.offset)
 	}
 
 	var e error
@@ -565,10 +507,8 @@ func (q *Q) String() (string, error) {
 func (q *Q) col(colName string) string {
 	if len(q.alias) > 0 {
 		return "`" + q.alias + "`.`" + colName + "`"
-		// return fmt.Sprintf("`%s`.`%s`", q.alias, colName)
 	}
 	return "`" + string(colName) + "`"
-	// return fmt.Sprintf("`%s`", colName)
 }
 
 func isConjunction(whereType WhereType) bool {
@@ -585,8 +525,6 @@ func isConjunction(whereType WhereType) bool {
 func (q *Q) printWhereClause(columnTypes map[Column]string, whereParts []*WherePart) string {
 
 	sb := strings.Builder{}
-
-	// prevWasConjunction := false
 
 	for k := range whereParts {
 

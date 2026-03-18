@@ -3,8 +3,7 @@ package testassets
 import (
 	"encoding/json"
 
-	"github.com/macinnir/dvc/core/lib/utils/db"
-	"github.com/macinnir/dvc/core/lib/utils/query"
+	"github.com/macinnir/query"
 	"gopkg.in/guregu/null.v3"
 )
 
@@ -113,18 +112,18 @@ func (c *Comment) String() string {
 	return string(str)
 }
 
-func (c *Comment) Create(db db.IDB) error {
+func (c *Comment) Create(db query.IDB) error {
 	return nil
 }
 
-func (c *Comment) Update(db db.IDB) error {
+func (c *Comment) Update(db query.IDB) error {
 	return nil
 }
 
-func (c *Comment) Delete(db db.IDB) error {
+func (c *Comment) Delete(db query.IDB) error {
 	return nil
 }
 
-func (c *Comment) FromID(db db.IDB, id int64) (query.IModel, error) {
+func (c *Comment) FromID(db query.IDB, id int64) (query.IModel, error) {
 	return nil, nil
 }

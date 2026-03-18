@@ -716,10 +716,14 @@ func TestMax(t *testing.T) {
 	assert.Equal(t, "SELECT COALESCE(MAX(`t`.`Year`), 0) AS `MaxYear` FROM `FiscalYear` `t` WHERE `t`.`IsDeleted` = 0", q1)
 }
 
-func ExampleMod(t *testing.T) {
-	query.Mod("foo", 2, 1)
+func ExampleMod() {
+	var modString = query.Mod("foo", 2, 1)
+	var result, _ = query.Select(&testassets.Comment{}).
+		Where(modString).
+		String()
+	fmt.Println(result)
 
-	// Output: MOD(`t`.`foo`, 2) = 1
+	// Output: SELECT `t`.* FROM `Comment` `t` WHERE MOD(`t`.`foo`, 2) = 1
 }
 
 func TestAvgAndCountsAndSums(t *testing.T) {
