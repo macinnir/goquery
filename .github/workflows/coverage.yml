@@ -30,7 +30,7 @@ jobs:
         filename: coverage.out # Pass the coverage profile file
 
     - name: Verify Changed Files
-      uses: tf-actions/verify-changed-files@v16
+      uses: tj-actions/verify-changed-files@v16
       id: verify-changed-files
       with:
         files: README.md
