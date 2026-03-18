@@ -3,6 +3,9 @@
 
 [![Go](https://github.com/macinnir/goquery/actions/workflows/go.yml/badge.svg)](https://github.com/macinnir/goquery/actions/workflows/go.yml)
 
+This is project is a work in progress. 
+Link to documentation [here](https://macinnir.github.io/goquery)
+
 # Performance 
 
 ```
