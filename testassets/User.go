@@ -414,7 +414,7 @@ func (c *User) Table_SchemaName() string {
 // FromID returns a FromID query statement
 func (c *User) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
 
-	sel := goquery.Select(c)
+	sel := goquery.Select(c.Table_Name(), c.Table_Column_Types())
 	sel.Fields(
 		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
 		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
@@ -552,7 +552,7 @@ func (c *User) String() string {
 func (c *User) Update(db goquery.IDB) error {
 	var e error
 	var ql string
-	ql, _ = goquery.Update(c).
+	ql, _ = goquery.Update(c.Table_Name(), c.Table_Column_Types()).
 		Set(User_Column_APIKeyID, c.APIKeyID).
 		Set(User_Column_AccountID, c.AccountID).
 		Set(User_Column_AccountRole, c.AccountRole).
@@ -618,7 +618,7 @@ func (c *User) Create(db goquery.IDB) error {
 
 	var e error
 
-	q := goquery.Insert(c)
+	q := goquery.Insert(c.Table_Name(), c.Table_Column_Types())
 
 	if c.UserID > 0 {
 		q.Set(User_Column_UserID, c.UserID)
@@ -695,7 +695,7 @@ func (c *User) Create(db goquery.IDB) error {
 // Destroy deletes a User record
 func (c *User) Delete(db goquery.IDB) error {
 	var e error
-	ql, _ := goquery.Delete(c).
+	ql, _ := goquery.Delete(c.Table_Name(), c.Table_Column_Types()).
 		Where(
 			goquery.EQ(User_Column_UserID, c.UserID),
 		).String()
@@ -712,7 +712,7 @@ func (r *User) Raw(db goquery.IDB, queryRaw string) ([]*User, error) {
 
 	var e error
 	model := []*User{}
-	sel := goquery.Select(r)
+	sel := goquery.Select(r.Table_Name(), r.Table_Column_Types())
 	sel.Fields(
 		goquery.NewField(goquery.FieldTypeBasic, User_Column_APIKeyID),
 		goquery.NewField(goquery.FieldTypeBasic, User_Column_AccountID),
@@ -865,7 +865,7 @@ type UserDALSelector struct {
 func (r *User) Select(db goquery.IDB) *UserDALSelector {
 	return &UserDALSelector{
 		db: db,
-		q:  goquery.Select(r),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
 	}
 }
 
@@ -1053,7 +1053,7 @@ type UserDALCounter struct {
 func (r *User) Count(db goquery.IDB) *UserDALCounter {
 	return &UserDALCounter{
 		db: db,
-		q:  goquery.Select(r).Count(r.Table_PrimaryKey(), "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Count(r.Table_PrimaryKey(), "c"),
 	}
 }
 
@@ -1097,7 +1097,7 @@ type UserDALSummer struct {
 func (r *User) Sum(db goquery.IDB, col goquery.Column) *UserDALSummer {
 	return &UserDALSummer{
 		db: db,
-		q:  goquery.Select(r).Sum(col, "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Sum(col, "c"),
 	}
 }
 
@@ -1136,7 +1136,7 @@ type UserDALMinner struct {
 func (r *User) Min(db goquery.IDB, col goquery.Column) *UserDALMinner {
 	return &UserDALMinner{
 		db: db,
-		q:  goquery.Select(r).Min(col, "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Min(col, "c"),
 	}
 }
 
@@ -1175,7 +1175,7 @@ type UserDALMaxer struct {
 func (r *User) Max(db goquery.IDB, col goquery.Column) *UserDALMaxer {
 	return &UserDALMaxer{
 		db: db,
-		q:  goquery.Select(r).Max(col, "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Max(col, "c"),
 	}
 }
 
@@ -1213,7 +1213,7 @@ type UserDALGetter struct {
 func (r *User) Get(db goquery.IDB) *UserDALGetter {
 	return &UserDALGetter{
 		db: db,
-		q:  goquery.Select(r),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
 	}
 }
 

@@ -6,78 +6,12 @@ import (
 	"strings"
 )
 
-type Column string
-type TableName string
-
-type QueryType int
-
-const (
-	QueryTypeNotSet QueryType = iota
-	QueryTypeSelect
-	QueryTypeRaw
-	QueryTypeUpdate
-	QueryTypeDelete
-	QueryTypeInsert
-)
-
-type FieldType int
-
-const (
-	FieldTypeBasic FieldType = iota
-	FieldTypeRaw
-	FieldTypeCount
-	FieldTypeSum
-	FieldTypeAvg
-	FieldTypeMin
-	FieldTypeMax
-)
-
-type Field struct {
-	FieldType FieldType
-	Name      Column
-	As        string
-	Raw       string
-}
-
-// NewField creates a new field.
-//
-//	NewField(FieldTypeBasic, "Foo")
-//	NewField(FieldTypeBasic, "Foo", "Bar") <-- `Foo` AS `Bar`
-func NewField(fieldType FieldType, column Column, opts ...string) *Field {
-
-	as := ""
-
-	if len(opts) > 0 {
-		as = opts[0]
-	}
-
-	return &Field{
-		FieldType: fieldType,
-		Name:      column,
-		As:        as,
-		Raw:       "",
-	}
-}
-
-// NewRawField creates a new field.
-//
-//	NewRawField("`t`.`Foo` AS `Bar`)
-func NewRawField(raw string) *Field {
-
-	return &Field{
-		FieldType: FieldTypeRaw,
-		Name:      "",
-		As:        "",
-		Raw:       raw,
-	}
-}
-
 type Q struct {
+	tableName   string
 	fields      []*Field
 	noAlias     []int
 	alias       string
 	raw         string
-	model       IModel
 	queryType   QueryType
 	where       *whereClause
 	limit       int64
@@ -90,45 +24,21 @@ type Q struct {
 	inst        int64
 }
 
-func Query(model IModel) *Q {
+func Query(
+	tableName TableName,
+	columnTypes map[Column]string,
+) *Q {
 	return &Q{
+		tableName:   string(tableName),
 		fields:      []*Field{},
 		noAlias:     []int{},
-		model:       model,
 		orderBy:     [][]string{},
 		setSorter:   []Column{},
 		sets:        map[Column]interface{}{},
-		columnTypes: model.Table_Column_Types(),
+		columnTypes: columnTypes,
 		alias:       "t",
 		errors:      []string{},
 		inst:        0,
-	}
-}
-
-func (q *Q) FromFieldToString(field *Field) string {
-
-	as := ""
-
-	if len(field.As) > 0 {
-		as = " AS `" + field.As + "`"
-	}
-
-	switch field.FieldType {
-	case FieldTypeCount:
-		return "COUNT(`" + q.alias + "`.`" + string(field.Name) + "`)" + as
-	case FieldTypeSum:
-		return "COALESCE(SUM(`" + q.alias + "`.`" + string(field.Name) + "`), 0)" + as
-	case FieldTypeAvg:
-		return "COALESCE(AVG(`" + q.alias + "`.`" + string(field.Name) + "`), 0)" + as
-	case FieldTypeMin:
-		return "COALESCE(MIN(`" + q.alias + "`.`" + string(field.Name) + "`), 0)" + as
-	case FieldTypeMax:
-		return "COALESCE(MAX(`" + q.alias + "`.`" + string(field.Name) + "`), 0)" + as
-	case FieldTypeRaw:
-		return field.Raw
-	// FieldTypeBasic
-	default:
-		return "`" + q.alias + "`.`" + string(field.Name) + "`" + as
 	}
 }
 
@@ -383,7 +293,7 @@ func (q *Q) String() (string, error) {
 
 		if len(q.fields) > 0 {
 			for k := range q.fields {
-				sb.WriteString(q.FromFieldToString(q.fields[k]))
+				sb.WriteString(q.fields[k].String(q.alias))
 				if k < len(q.fields)-1 {
 					sb.WriteString(", ")
 				}
@@ -404,7 +314,7 @@ func (q *Q) String() (string, error) {
 		q.alias = ""
 	}
 
-	sb.WriteString(" `" + string(q.model.Table_Name()) + "`")
+	sb.WriteString(" `" + string(q.tableName) + "`")
 
 	if len(q.alias) > 0 && q.queryType == QueryTypeSelect {
 		sb.WriteString(" `" + q.alias + "`")
@@ -674,7 +584,7 @@ func (q *Q) error(err string) {
 }
 
 func (q *Q) errorInvalidColumn(errType QueryErrorType, queryErrorLocation, comment string) {
-	q.error(fmt.Sprintf("%s at %s in model `%s` -- %s", errType, queryErrorLocation, q.model.Table_Name(), comment))
+	q.error(fmt.Sprintf("%s at %s in model `%s` -- %s", errType, queryErrorLocation, q.tableName, comment))
 }
 
 type WhereType int
@@ -897,14 +807,14 @@ func INString(fieldName Column, values []string) *WherePart {
 	return IN(fieldName, interfaces...)
 }
 
-// Rawf is a raw SQL statement
-// Example: goquery.Rawf("`t`.`LastRunDate` + 60000 < %d", seconds)),
-func Rawf(str string, args ...interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeRaw,
-		"",
-		[]interface{}{fmt.Sprintf(str, args...)},
-	)
+func NotInString(fieldName Column, values []string) *WherePart {
+	interfaces := make([]interface{}, len(values))
+
+	for k := range values {
+		interfaces[k] = values[k]
+	}
+
+	return NOTIN(fieldName, interfaces...)
 }
 
 // INInt64 is a helper function for converting a slice of string arguments into
@@ -919,6 +829,16 @@ func INInt64(fieldName Column, values []int64) *WherePart {
 	return IN(fieldName, interfaces...)
 }
 
+func NotInInt64(fieldName Column, values []int64) *WherePart {
+	interfaces := make([]interface{}, len(values))
+
+	for k := range values {
+		interfaces[k] = values[k]
+	}
+
+	return NOTIN(fieldName, interfaces...)
+}
+
 // INInt is a helper function for converting a slice of string arguments into
 // a slice of interface arguments, passed into an IN clause and returned
 func INInt(fieldName Column, values []int) *WherePart {
@@ -929,6 +849,24 @@ func INInt(fieldName Column, values []int) *WherePart {
 	}
 
 	return IN(fieldName, interfaces...)
+}
+
+func NotInInt(fieldName Column, values []int) *WherePart {
+	interfaces := make([]interface{}, len(values))
+	for k := range values {
+		interfaces[k] = values[k]
+	}
+	return NOTIN(fieldName, interfaces...)
+}
+
+// Rawf is a raw SQL statement
+// Example: goquery.Rawf("`t`.`LastRunDate` + 60000 < %d", seconds)),
+func Rawf(str string, args ...interface{}) *WherePart {
+	return newWherePart(
+		WhereTypeRaw,
+		"",
+		[]interface{}{fmt.Sprintf(str, args...)},
+	)
 }
 
 // Between is a BETWEEN statement
@@ -1168,21 +1106,21 @@ func Union(queries ...*Q) (string, error) {
 	return strings.Join(sqls, " UNION ALL "), nil
 }
 
-func Select(model IModel) *Q {
-	q := Query(model)
+func Select(modelName TableName, columnTypes map[Column]string) *Q {
+	q := Query(modelName, columnTypes)
 	q.queryType = QueryTypeSelect
 	return q
 }
 
-func Raw(model IModel, query string) *Q {
-	q := Query(model)
+func Raw(modelName TableName, columnTypes map[Column]string, query string) *Q {
+	q := Query(modelName, columnTypes)
 	q.queryType = QueryTypeRaw
 	q.raw = query
 	return q
 }
 
-func Update(model IModel) *Q {
-	q := Query(model)
+func Update(modelName TableName, columnTypes map[Column]string) *Q {
+	q := Query(modelName, columnTypes)
 	q.queryType = QueryTypeUpdate
 	return q
 }
@@ -1195,14 +1133,14 @@ func (q *Q) Set(fieldName Column, value interface{}) *Q {
 	return q
 }
 
-func Delete(model IModel) *Q {
-	q := Query(model)
+func Delete(modelName TableName, columnTypes map[Column]string) *Q {
+	q := Query(modelName, columnTypes)
 	q.queryType = QueryTypeDelete
 	return q
 }
 
-func Insert(model IModel) *Q {
-	q := Query(model)
+func Insert(modelName TableName, columnTypes map[Column]string) *Q {
+	q := Query(modelName, columnTypes)
 	q.queryType = QueryTypeInsert
 	return q
 }

@@ -11,14 +11,15 @@ import (
 )
 
 func TestQuerySelect(t *testing.T) {
-	q := goquery.Select(&testassets.Comment{})
+	var model = &testassets.Comment{}
+	q := goquery.Select(model.Table_Name(), model.Table_Column_Types())
 	var e error
 
 	sql, e := q.String()
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t`", sql)
 
-	sql, e = goquery.Select(&testassets.Comment{}).
+	sql, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.GT("DateCreated", 2),
 			goquery.Or(),
@@ -29,7 +30,7 @@ func TestQuerySelect(t *testing.T) {
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`DateCreated` > 2 OR `t`.`Content` = '"+`foo\'`+"s' OR `t`.`Name` = 'bar'", sql)
 
-	sql, e = goquery.Select(&testassets.Comment{}).
+	sql, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.GT("DateCreated", 2),
 			goquery.Or(),
@@ -46,7 +47,7 @@ func TestQuerySelect(t *testing.T) {
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`DateCreated` > 2 OR `t`.`Content` = 'foo' AND ( `t`.`DateCreated` >= 1 OR `t`.`DateCreated` <= 2 OR `t`.`DateCreated` < 3 )", sql)
 
-	sql, e = goquery.Select(&testassets.Comment{}).
+	sql, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.WhereAll(),
 			goquery.And(
@@ -58,7 +59,7 @@ func TestQuerySelect(t *testing.T) {
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE 1=1 AND ( `t`.`DateCreated` > 2 OR `t`.`Content` = 'foo' )", sql)
 
-	sql, e = goquery.Select(&testassets.Comment{}).
+	sql, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.WhereAll(),
 			goquery.Or(
@@ -83,30 +84,35 @@ func TestQuerySelect(t *testing.T) {
 }
 
 func TestQuerySelect_LimitPage(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).LimitPage(10, 5).String()
+
+	var model = &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).LimitPage(10, 5).String()
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` LIMIT 10 OFFSET 50", sql, "LimitPage() should have an offset that multiplies the limit by the page")
 }
 
 func TestMultipleOrderBy(t *testing.T) {
-	q, e := goquery.Select(&testassets.Comment{}).OrderBy("CommentID", goquery.OrderDirASC).OrderBy("DateCreated", goquery.OrderDirDESC).String()
+	model := &testassets.Comment{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).OrderBy("CommentID", goquery.OrderDirASC).OrderBy("DateCreated", goquery.OrderDirDESC).String()
 	assert.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` ORDER BY `t`.`CommentID` ASC, `t`.`DateCreated` DESC", q)
 }
 
 func TestQuerySelect_InvalidOrderByColumn(t *testing.T) {
 
-	q, e := goquery.Select(&testassets.Comment{}).OrderBy("CommentID", goquery.OrderDirASC).String()
+	model := &testassets.Comment{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).OrderBy("CommentID", goquery.OrderDirASC).String()
 	assert.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` ORDER BY `t`.`CommentID` ASC", q)
 
-	q, e = goquery.Select(&testassets.Comment{}).OrderBy("foo", goquery.OrderDirASC).String()
+	q, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).OrderBy("foo", goquery.OrderDirASC).String()
 	assert.Equal(t, "Invalid Column Name at ORDER BY in model `Comment` -- foo", e.Error())
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` ORDER BY `t`.`foo` ASC", q)
 }
 
 func TestQuerySelect_WhereIN(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.IN("Content", "foo", "bar", "baz"),
 		).String()
@@ -115,7 +121,8 @@ func TestQuerySelect_WhereIN(t *testing.T) {
 }
 
 func TestQuerySelect_WhereNotIN(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.NOTIN("Content", "foo", "bar", "baz"),
 		).String()
@@ -125,7 +132,8 @@ func TestQuerySelect_WhereNotIN(t *testing.T) {
 
 func TestQuerySelect_InvalidFieldName(t *testing.T) {
 
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.EQ("Foo", "Bar"),
 		).String()
@@ -140,7 +148,8 @@ func TestQuery_INString(t *testing.T) {
 
 	args := []string{"foo", "bar", "baz"}
 
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.INString(
 				"Content",
@@ -157,7 +166,8 @@ func TestQuery_INInt64(t *testing.T) {
 
 	args := []int64{1, 2, 3}
 
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.INInt64(
 				"CommentID",
@@ -174,7 +184,8 @@ func TestQuery_INInt(t *testing.T) {
 
 	args := []int{1, 2, 3}
 
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.INInt(
 				"CommentID",
@@ -189,7 +200,8 @@ func TestQuery_INInt(t *testing.T) {
 
 func TestQuerySelect_EmptyWhereClause(t *testing.T) {
 
-	q := goquery.Select(&testassets.Comment{})
+	model := &testassets.Comment{}
+	q := goquery.Select(model.Table_Name(), model.Table_Column_Types())
 	// TODO extra where clause
 	wheres := []*goquery.WherePart{}
 	sql, e := q.Where(wheres...).String()
@@ -197,14 +209,15 @@ func TestQuerySelect_EmptyWhereClause(t *testing.T) {
 	// assert.Equal(t, "Empty where clause at WHERE in model `Comment` -- ", e.Error())
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t`", sql)
 
-	q = goquery.Select(&testassets.Comment{})
+	q = goquery.Select(model.Table_Name(), model.Table_Column_Types())
 	sql, e = q.Where(goquery.EQ("CommentID", 1)).String()
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`CommentID` = 1", sql)
 }
 
 func TestQuerySelect_InvalidField(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Field("Foo").
 		String()
 
@@ -214,41 +227,48 @@ func TestQuerySelect_InvalidField(t *testing.T) {
 }
 
 func TestWhereLike(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).Where(goquery.Like("Name", "Foo%")).String()
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.Like("Name", "Foo%")).String()
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`Name` LIKE 'Foo%'", sql)
 }
 
 func TestWhereLike_InvalidValue(t *testing.T) {
-	_, e := goquery.Select(&testassets.Comment{}).Where(goquery.Like("CommentID", "Foo%")).String()
+	model := &testassets.Comment{}
+	_, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.Like("CommentID", "Foo%")).String()
 	require.NotNil(t, e)
 	assert.Equal(t, "Invalid value at WHERE...LIKE in model `Comment` -- `%d` value: Foo%", e.Error())
 }
 
 func TestWhereNotLike(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Comment{}).Where(goquery.NotLike("Name", "Foo%")).String()
+	model := &testassets.Comment{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.NotLike("Name", "Foo%")).String()
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`Name` NOT LIKE 'Foo%'", sql)
 }
 
 func TestWhereNotLike_InvalidValue(t *testing.T) {
-	_, e := goquery.Select(&testassets.Comment{}).Where(goquery.NotLike("CommentID", "Foo%")).String()
+	model := &testassets.Comment{}
+	_, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.NotLike("CommentID", "Foo%")).String()
 	require.NotNil(t, e)
 	assert.Equal(t, "Invalid value at WHERE...NOT LIKE in model `Comment` -- `%d` value: Foo%", e.Error())
 }
 
 func TestUnion(t *testing.T) {
+	model := &testassets.Comment{}
 	var e error
+
 	sql, e := goquery.Union(
-		goquery.Select(&testassets.Comment{}).Where(goquery.EQ("Content", "bar")),
-		goquery.Select(&testassets.Comment{}).Where(goquery.EQ("Content", "baz")),
+		goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.EQ("Content", "bar")),
+		goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.EQ("Content", "baz")),
 	)
 	require.Nil(t, e)
 	assert.Equal(t, "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`Content` = 'bar' UNION ALL SELECT `t`.* FROM `Comment` `t` WHERE `t`.`Content` = 'baz'", sql)
 }
 
 func TestUpdate(t *testing.T) {
-	sql, e := goquery.Update(&testassets.Comment{}).
+	var model = &testassets.Comment{}
+	sql, e := goquery.Update(model.Table_Name(), model.Table_Column_Types()).
 		Set("Content", "bar").
 		Set("ObjectID", 1).
 		Where(goquery.EQ("CommentID", 123)).String()
@@ -257,7 +277,8 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestUpdate_InvalidField(t *testing.T) {
-	sql, e := goquery.Update(&testassets.Comment{}).
+	var model = &testassets.Comment{}
+	sql, e := goquery.Update(model.Table_Name(), model.Table_Column_Types()).
 		Set("Foo", "bar").
 		Set("ObjectID", 1).
 		Where(goquery.EQ("CommentID", 123)).String()
@@ -266,14 +287,16 @@ func TestUpdate_InvalidField(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	sql, e := goquery.Delete(&testassets.Comment{}).
+	var model = &testassets.Comment{}
+	sql, e := goquery.Delete(model.Table_Name(), model.Table_Column_Types()).
 		Where(goquery.EQ("CommentID", 123)).String()
 	require.Nil(t, e)
 	assert.Equal(t, "DELETE FROM `Comment` WHERE `CommentID` = 123", sql)
 }
 
 func TestInsert(t *testing.T) {
-	sql, e := goquery.Insert(&testassets.Comment{}).
+	var model = &testassets.Comment{}
+	sql, e := goquery.Insert(model.Table_Name(), model.Table_Column_Types()).
 		Set("DateCreated", 1).
 		Set("Content", "foo").
 		Set("ObjectType", 2).
@@ -284,8 +307,8 @@ func TestInsert(t *testing.T) {
 }
 
 func TestInsert_InvalidFieldName(t *testing.T) {
-
-	sql, e := goquery.Insert(&testassets.Comment{}).
+	var model = &testassets.Comment{}
+	sql, e := goquery.Insert(model.Table_Name(), model.Table_Column_Types()).
 		Set("Foo", "Bar").String()
 
 	require.NotNil(t, e)
@@ -295,7 +318,8 @@ func TestInsert_InvalidFieldName(t *testing.T) {
 }
 
 func TestSelectFields(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Count("JobID", "ProjectsQuoted").
 		Sum("TotalPrice", "SalesVolume").
 		Sum("GrossProfit", "GM").
@@ -312,7 +336,8 @@ func TestSelectFields(t *testing.T) {
 }
 
 func TestSum_InvalidField(t *testing.T) {
-	_, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	_, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Sum("Foo", "Foo").String()
 	require.NotNil(t, e)
 	assert.Equal(t, "Invalid Column Name at SELECT...Sum() in model `Job` -- Foo", e.Error())
@@ -320,7 +345,8 @@ func TestSum_InvalidField(t *testing.T) {
 }
 
 func TestSelectFields2(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Field("JobID").
 		FieldAs("JobID", "foo").
 		Where(
@@ -334,7 +360,8 @@ func TestSelectFields2(t *testing.T) {
 }
 
 func TestSelectFields3(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Fields(
 			goquery.NewField(goquery.FieldTypeBasic, "JobID"),
 			goquery.NewField(goquery.FieldTypeBasic, "JobID", "foo"),
@@ -350,7 +377,8 @@ func TestSelectFields3(t *testing.T) {
 }
 
 func TestSelectAlias(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Alias("j").
 		Count("JobID", "ProjectsQuoted").
 		// Field("COALESCE(SUM(TotalPrice), 0)", "SalesVolume").
@@ -366,7 +394,8 @@ func TestSelectAlias(t *testing.T) {
 }
 
 func TestCountAlias(t *testing.T) {
-	sql, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	sql, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Count("JobID", "ProjectsQuoted").
 		Where(
 			goquery.EQ("IsDeleted", 0),
@@ -381,12 +410,14 @@ func TestCountAlias(t *testing.T) {
 
 func TestSelectExists(t *testing.T) {
 
-	actual, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	var model2 = &testassets.JobSales{}
+	actual, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Count("JobID", "ProjectsQuoted").
 		Sum("TotalPrice", "SalesVolume").
 		Where(
 			goquery.Exists(
-				goquery.Select(&testassets.JobSales{}).
+				goquery.Select(model2.Table_Name(), model2.Table_Column_Types()).
 					Alias("js").
 					FieldRaw("1", "n").
 					Where(
@@ -415,12 +446,14 @@ func TestSelectExists(t *testing.T) {
 
 func TestSelectNotExists(t *testing.T) {
 
-	actual, e := goquery.Select(&testassets.Job{}).
+	var model = &testassets.Job{}
+	var model2 = &testassets.JobSales{}
+	actual, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Count("JobID", "ProjectsQuoted").
 		Sum("TotalPrice", "SalesVolume").
 		Where(
 			goquery.NotExists(
-				goquery.Select(&testassets.JobSales{}).
+				goquery.Select(model2.Table_Name(), model2.Table_Column_Types()).
 					Alias("js").
 					FieldRaw("1", "n").
 					Where(
@@ -448,19 +481,21 @@ func TestSelectNotExists(t *testing.T) {
 }
 
 func TestWhereTypeAll(t *testing.T) {
-	q, e := goquery.Select(&testassets.Job{}).Where(goquery.WhereAll()).String()
+	var model = &testassets.Job{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.WhereAll()).String()
 	require.Nil(t, e)
 	expected := "SELECT `t`.* FROM `Job` `t` WHERE 1=1"
 	assert.Equal(t, expected, q)
 
-	q, e = goquery.Select(&testassets.Job{}).Where(goquery.WhereAll(), goquery.And(), goquery.EQ("IsDeleted", 0)).String()
+	q, e = goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.WhereAll(), goquery.And(), goquery.EQ("IsDeleted", 0)).String()
 	require.Nil(t, e)
 	expected = "SELECT `t`.* FROM `Job` `t` WHERE 1=1 AND `t`.`IsDeleted` = 0"
 	assert.Equal(t, expected, q)
 }
 
 func TestWhere_MultiWheres(t *testing.T) {
-	q := goquery.Select(&testassets.Job{}).Where(goquery.WhereAll())
+	var model = &testassets.Job{}
+	q := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.WhereAll())
 	q.Where(goquery.And(), goquery.EQ("IsDeleted", 0))
 	r, e := q.String()
 
@@ -490,7 +525,8 @@ func TestWhere_MultiWheres(t *testing.T) {
 // }
 
 func TestMod(t *testing.T) {
-	q, e := goquery.Select(&testassets.Job{}).Where(goquery.Mod("IsDeleted", 1, 0)).String()
+	var model = &testassets.Job{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.Mod("IsDeleted", 1, 0)).String()
 	expected := "SELECT `t`.* FROM `Job` `t` WHERE MOD(`t`.`IsDeleted`, 1) = 0"
 
 	assert.Nil(t, e)
@@ -498,7 +534,8 @@ func TestMod(t *testing.T) {
 }
 
 func TestModF(t *testing.T) {
-	q, e := goquery.Select(&testassets.Job{}).Where(goquery.Modf(1, "IsDeleted", 0)).String()
+	var model = &testassets.Job{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.Modf(1, "IsDeleted", 0)).String()
 	expected := "SELECT `t`.* FROM `Job` `t` WHERE MOD(1, `t`.`IsDeleted`) = 0"
 
 	assert.Nil(t, e)
@@ -506,7 +543,8 @@ func TestModF(t *testing.T) {
 }
 
 func TestBitAnd(t *testing.T) {
-	q, e := goquery.Select(&testassets.Job{}).Where(goquery.BitAnd("IsDeleted", 1, 0)).String()
+	var model = &testassets.Job{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(goquery.BitAnd("IsDeleted", 1, 0)).String()
 	expected := "SELECT `t`.* FROM `Job` `t` WHERE `t`.`IsDeleted` & 1 = 0"
 
 	assert.Nil(t, e)
@@ -532,7 +570,8 @@ func TestModAndBitwise(t *testing.T) {
 	// It has been atleast 60 seconds since the last run
 	q += fmt.Sprintf("AND ( `t`.`LastRunDate` + 60000 < %d )", seconds)
 
-	actual, e := goquery.Select(&testassets.TaskBatchSchedule{}).
+	var model = &testassets.TaskBatchSchedule{}
+	actual, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.EQ("IsActive", 1),
 			goquery.And(),
@@ -554,7 +593,8 @@ func TestModAndBitwise(t *testing.T) {
 
 func TestGrouping(t *testing.T) {
 	expected := "SELECT `t`.* FROM `FiscalYear` `t` WHERE `t`.`IsDeleted` = 0 AND ( ( `t`.`DateFrom` BETWEEN 1 AND 2 ) OR ( `t`.`DateTo` BETWEEN 3 AND 4 ) )"
-	actual, e := goquery.Select(&testassets.FiscalYear{}).
+	var model = &testassets.FiscalYear{}
+	actual, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.EQ("IsDeleted", 0),
 			goquery.And(
@@ -570,8 +610,8 @@ func TestGrouping(t *testing.T) {
 }
 
 func TestRaw(t *testing.T) {
-
-	q, e := goquery.Raw(&testassets.TaskBatchSchedule{}, "SELECT * FROM `TaskBatchSchedule` WHERE 1=1 ORDER BY `t`.`LastRunDate` DESC LIMIT 1 OFFSET 2").
+	var model = &testassets.TaskBatchSchedule{}
+	q, e := goquery.Raw(model.Table_Name(), model.Table_Column_Types(), "SELECT * FROM `TaskBatchSchedule` WHERE 1=1 ORDER BY `t`.`LastRunDate` DESC LIMIT 1 OFFSET 2").
 		String()
 
 	assert.Nil(t, e)
@@ -579,7 +619,8 @@ func TestRaw(t *testing.T) {
 }
 
 func TestAnds(t *testing.T) {
-	q1, e1 := goquery.Select(&testassets.FiscalYear{}).
+	var model = &testassets.FiscalYear{}
+	q1, e1 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ands(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -589,7 +630,7 @@ func TestAnds(t *testing.T) {
 			),
 		).String()
 
-	q2, e2 := goquery.Select(&testassets.FiscalYear{}).
+	q2, e2 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ands(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -600,7 +641,7 @@ func TestAnds(t *testing.T) {
 			),
 		).String()
 
-	q3, e3 := goquery.Select(&testassets.FiscalYear{}).
+	q3, e3 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ands(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -610,7 +651,7 @@ func TestAnds(t *testing.T) {
 				goquery.EQ(testassets.FiscalYear_Column_Year, 2021),
 			),
 		).String()
-	q4, e4 := goquery.Select(&testassets.FiscalYear{}).
+	q4, e4 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ands(
 				nil,
@@ -632,7 +673,8 @@ func TestAnds(t *testing.T) {
 }
 
 func TestOrs(t *testing.T) {
-	q1, e1 := goquery.Select(&testassets.FiscalYear{}).
+	var model = &testassets.FiscalYear{}
+	q1, e1 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ors(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -641,7 +683,7 @@ func TestOrs(t *testing.T) {
 			),
 		).String()
 
-	q2, e2 := goquery.Select(&testassets.FiscalYear{}).
+	q2, e2 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ors(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -651,7 +693,7 @@ func TestOrs(t *testing.T) {
 			),
 		).String()
 
-	q3, e3 := goquery.Select(&testassets.FiscalYear{}).
+	q3, e3 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ors(
 				goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0),
@@ -661,7 +703,7 @@ func TestOrs(t *testing.T) {
 			),
 		).String()
 
-	q4, e4 := goquery.Select(&testassets.FiscalYear{}).
+	q4, e4 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(
 			goquery.Ors(
 				nil,
@@ -684,7 +726,8 @@ func TestOrs(t *testing.T) {
 // func TestWhereSelect(t *testing.T) {
 // 	expected := "SELECT `t`.* FROM `Comment` `t` WHERE `t`.`CommentID` < (SELECT QuoteNumberFullInt FROM QuoteNumber WHERE QuoteNumberID = %d) AND `t`.`IsDeleted` = 0 AND `t`.`JobID` > 0 ORDER BY `t`.`QuoteNumberFullInt` DESC LIMIT 1"
 
-// 	q, e := goquery.Select(&testassets.Comment{}).Where(
+// model := &testassets.Comment{}
+// 	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Where(
 // 		goquery.LT(testassets.Comment_Column_CommentID, )
 // 	).String()
 
@@ -703,14 +746,16 @@ func TestEscapeString(t *testing.T) {
 }
 
 func TestMin(t *testing.T) {
-	q1, e1 := goquery.Select(&testassets.FiscalYear{}).Min(testassets.FiscalYear_Column_Year, "MinYear").Where(goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0)).String()
+	var model = &testassets.FiscalYear{}
+	q1, e1 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Min(testassets.FiscalYear_Column_Year, "MinYear").Where(goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0)).String()
 
 	assert.Nil(t, e1)
 	assert.Equal(t, "SELECT COALESCE(MIN(`t`.`Year`), 0) AS `MinYear` FROM `FiscalYear` `t` WHERE `t`.`IsDeleted` = 0", q1)
 }
 
 func TestMax(t *testing.T) {
-	q1, e1 := goquery.Select(&testassets.FiscalYear{}).Max(testassets.FiscalYear_Column_Year, "MaxYear").Where(goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0)).String()
+	var model = &testassets.FiscalYear{}
+	q1, e1 := goquery.Select(model.Table_Name(), model.Table_Column_Types()).Max(testassets.FiscalYear_Column_Year, "MaxYear").Where(goquery.EQ(testassets.FiscalYear_Column_IsDeleted, 0)).String()
 
 	assert.Nil(t, e1)
 	assert.Equal(t, "SELECT COALESCE(MAX(`t`.`Year`), 0) AS `MaxYear` FROM `FiscalYear` `t` WHERE `t`.`IsDeleted` = 0", q1)
@@ -718,7 +763,9 @@ func TestMax(t *testing.T) {
 
 func ExampleMod() {
 	var modString = goquery.Mod("foo", 2, 1)
-	var result, _ = goquery.Select(&testassets.Comment{}).
+	model := &testassets.Comment{}
+	// fmt.Println(model.Table_Name())
+	var result, _ = goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Where(modString).
 		String()
 	fmt.Println(result)
@@ -727,8 +774,8 @@ func ExampleMod() {
 }
 
 func TestAvgAndCountsAndSums(t *testing.T) {
-
-	q, e := goquery.Select(&testassets.FiscalYear{}).
+	var model = &testassets.FiscalYear{}
+	q, e := goquery.Select(model.Table_Name(), model.Table_Column_Types()).
 		Count(testassets.FiscalYear_Column_FiscalYearID, "Overall").
 		Sum(testassets.FiscalYear_Column_FiscalYearID, "ChangesFound").
 		Avg(testassets.FiscalYear_Column_FiscalYearID, "AverageChangesFound").String()

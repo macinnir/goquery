@@ -57,6 +57,10 @@ type FiscalYear struct {
 	IsLocked        int64 `db:"IsLocked" json:"IsLocked"`
 }
 
+func Cols() []goquery.Column {
+	return FiscalYear_Columns
+}
+
 // FiscalYear_TableName is the name of the table
 func (c *FiscalYear) Table_Name() goquery.TableName {
 	return FiscalYear_TableName
@@ -112,7 +116,7 @@ func (c *FiscalYear) String() string {
 func (c *FiscalYear) Update(db goquery.IDB) error {
 	var e error
 	var ql string
-	ql, _ = goquery.Update(c).
+	ql, _ = goquery.Update(c.Table_Name(), c.Table_Column_Types()).
 		Set(FiscalYear_Column_FiscalYearKey, c.FiscalYearKey).
 		Set(FiscalYear_Column_Year, c.Year).
 		Set(FiscalYear_Column_DateFrom, c.DateFrom).
@@ -135,7 +139,7 @@ func (c *FiscalYear) Update(db goquery.IDB) error {
 func (c *FiscalYear) Create(db goquery.IDB) error {
 
 	var e error
-	q := goquery.Insert(c)
+	q := goquery.Insert(c.Table_Name(), c.Table_Column_Types())
 
 	if c.FiscalYearID > 0 {
 		q.Set(FiscalYear_Column_FiscalYearID, c.FiscalYearID)
@@ -166,7 +170,7 @@ func (c *FiscalYear) Create(db goquery.IDB) error {
 // Destroy deletes a FiscalYear record
 func (c *FiscalYear) Delete(db goquery.IDB) error {
 	var e error
-	ql, _ := goquery.Delete(c).
+	ql, _ := goquery.Delete(c.Table_Name(), c.Table_Column_Types()).
 		Where(
 			goquery.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID),
 		).String()
@@ -204,7 +208,7 @@ type FiscalYearDALSelector struct {
 func (r *FiscalYear) Select(db goquery.IDB) *FiscalYearDALSelector {
 	return &FiscalYearDALSelector{
 		db: db,
-		q:  goquery.Select(r),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
 	}
 }
 
@@ -266,7 +270,7 @@ type FiscalYearDALCounter struct {
 func (r *FiscalYear) Count(db goquery.IDB) *FiscalYearDALCounter {
 	return &FiscalYearDALCounter{
 		db: db,
-		q:  goquery.Select(r).Count(r.Table_PrimaryKey(), "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Count(r.Table_PrimaryKey(), "c"),
 	}
 }
 
@@ -309,7 +313,7 @@ type FiscalYearDALSummer struct {
 func (r *FiscalYear) Sum(db goquery.IDB, col goquery.Column) *FiscalYearDALSummer {
 	return &FiscalYearDALSummer{
 		db: db,
-		q:  goquery.Select(r).Sum(col, "c"),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Sum(col, "c"),
 	}
 }
 
@@ -345,7 +349,7 @@ type FiscalYearDALGetter struct {
 func (r *FiscalYear) Get(db goquery.IDB) *FiscalYearDALGetter {
 	return &FiscalYearDALGetter{
 		db: db,
-		q:  goquery.Select(r),
+		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
 	}
 }
 
