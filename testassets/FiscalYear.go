@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	goquery "github.com/macinnir/query"
+	goquery "github.com/macinnir/goquery"
 )
 
 const (
@@ -101,7 +101,7 @@ func (c *FiscalYear) Table_SchemaName() string {
 }
 
 // FromID returns a FromID query statement
-func (c *FiscalYear) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
+func (c *FiscalYear) FromID(db goquery.DBInterface, id int64) (goquery.ModelInterface, error) {
 	model := &FiscalYear{}
 	return model, nil
 }
@@ -113,10 +113,10 @@ func (c *FiscalYear) String() string {
 }
 
 // Update updates a FiscalYear record
-func (c *FiscalYear) Update(db goquery.IDB) error {
+func (c *FiscalYear) Update(db goquery.DBInterface) error {
 	var e error
 	var ql string
-	ql, _ = goquery.Update(c.Table_Name(), c.Table_Column_Types()).
+	ql, _ = goquery.Update(c).
 		Set(FiscalYear_Column_FiscalYearKey, c.FiscalYearKey).
 		Set(FiscalYear_Column_Year, c.Year).
 		Set(FiscalYear_Column_DateFrom, c.DateFrom).
@@ -136,10 +136,10 @@ func (c *FiscalYear) Update(db goquery.IDB) error {
 }
 
 // Create inserts a FiscalYear record
-func (c *FiscalYear) Create(db goquery.IDB) error {
+func (c *FiscalYear) Create(db goquery.DBInterface) error {
 
 	var e error
-	q := goquery.Insert(c.Table_Name(), c.Table_Column_Types())
+	q := goquery.Insert(c)
 
 	if c.FiscalYearID > 0 {
 		q.Set(FiscalYear_Column_FiscalYearID, c.FiscalYearID)
@@ -168,9 +168,9 @@ func (c *FiscalYear) Create(db goquery.IDB) error {
 }
 
 // Destroy deletes a FiscalYear record
-func (c *FiscalYear) Delete(db goquery.IDB) error {
+func (c *FiscalYear) Delete(db goquery.DBInterface) error {
 	var e error
-	ql, _ := goquery.Delete(c.Table_Name(), c.Table_Column_Types()).
+	ql, _ := goquery.Delete(c).
 		Where(
 			goquery.EQ(FiscalYear_Column_FiscalYearID, c.FiscalYearID),
 		).String()
@@ -183,7 +183,7 @@ func (c *FiscalYear) Delete(db goquery.IDB) error {
 	return e
 }
 
-func (r *FiscalYear) Raw(db goquery.IDB, queryRaw string) ([]*FiscalYear, error) {
+func (r *FiscalYear) Raw(db goquery.DBInterface, queryRaw string) ([]*FiscalYear, error) {
 
 	// var e error
 	model := []*FiscalYear{}
@@ -200,15 +200,15 @@ func (r *FiscalYear) Raw(db goquery.IDB, queryRaw string) ([]*FiscalYear, error)
 }
 
 type FiscalYearDALSelector struct {
-	db       goquery.IDB
+	db       goquery.DBInterface
 	q        *goquery.Q
 	isSingle bool
 }
 
-func (r *FiscalYear) Select(db goquery.IDB) *FiscalYearDALSelector {
+func (r *FiscalYear) Select(db goquery.DBInterface) *FiscalYearDALSelector {
 	return &FiscalYearDALSelector{
 		db: db,
-		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
+		q:  goquery.Select(r),
 	}
 }
 
@@ -263,14 +263,14 @@ func (r *FiscalYearDALSelector) Run() ([]*FiscalYear, error) {
 
 // Counter
 type FiscalYearDALCounter struct {
-	db goquery.IDB
+	db goquery.DBInterface
 	q  *goquery.Q
 }
 
-func (r *FiscalYear) Count(db goquery.IDB) *FiscalYearDALCounter {
+func (r *FiscalYear) Count(db goquery.DBInterface) *FiscalYearDALCounter {
 	return &FiscalYearDALCounter{
 		db: db,
-		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Count(r.Table_PrimaryKey(), "c"),
+		q:  goquery.Select(r).Count(r.Table_PrimaryKey(), "c"),
 	}
 }
 
@@ -306,14 +306,14 @@ func (ds *FiscalYearDALCounter) Run() (int64, error) {
 
 // Summer
 type FiscalYearDALSummer struct {
-	db goquery.IDB
+	db goquery.DBInterface
 	q  *goquery.Q
 }
 
-func (r *FiscalYear) Sum(db goquery.IDB, col goquery.Column) *FiscalYearDALSummer {
+func (r *FiscalYear) Sum(db goquery.DBInterface, col goquery.Column) *FiscalYearDALSummer {
 	return &FiscalYearDALSummer{
 		db: db,
-		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()).Sum(col, "c"),
+		q:  goquery.Select(r).Sum(col, "c"),
 	}
 }
 
@@ -342,14 +342,14 @@ func (ds *FiscalYearDALSummer) Run() (float64, error) {
 }
 
 type FiscalYearDALGetter struct {
-	db goquery.IDB
+	db goquery.DBInterface
 	q  *goquery.Q
 }
 
-func (r *FiscalYear) Get(db goquery.IDB) *FiscalYearDALGetter {
+func (r *FiscalYear) Get(db goquery.DBInterface) *FiscalYearDALGetter {
 	return &FiscalYearDALGetter{
 		db: db,
-		q:  goquery.Select(r.Table_Name(), r.Table_Column_Types()),
+		q:  goquery.Select(r),
 	}
 }
 

@@ -3,7 +3,7 @@ package testassets
 import (
 	"encoding/json"
 
-	goquery "github.com/macinnir/query"
+	goquery "github.com/macinnir/goquery"
 )
 
 const (
@@ -114,18 +114,18 @@ func (c *TaskBatchSchedule) String() string {
 	return string(bytes)
 }
 
-func (c *TaskBatchSchedule) Create(db goquery.IDB) error {
+func (c *TaskBatchSchedule) Create(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) Update(db goquery.IDB) error {
+func (c *TaskBatchSchedule) Update(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) Delete(db goquery.IDB) error {
+func (c *TaskBatchSchedule) Delete(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *TaskBatchSchedule) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
+func (c *TaskBatchSchedule) FromID(db goquery.DBInterface, id int64) (goquery.ModelInterface, error) {
 	return nil, nil
 }

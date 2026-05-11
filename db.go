@@ -5,8 +5,8 @@ import (
 	"database/sql"
 )
 
-// IDB is a container for db interactions
-type IDB interface {
+// DBInterface is a container for db interactions
+type DBInterface interface {
 	Close()
 	Exec(query string, args ...interface{}) (sql.Result, error)
 	BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error)

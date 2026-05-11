@@ -3,7 +3,7 @@ package testassets
 import (
 	"encoding/json"
 
-	goquery "github.com/macinnir/query"
+	goquery "github.com/macinnir/goquery"
 )
 
 const (
@@ -99,18 +99,18 @@ func (c *JobSales) String() string {
 	return string(b)
 }
 
-func (c *JobSales) Create(db goquery.IDB) error {
+func (c *JobSales) Create(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *JobSales) Update(db goquery.IDB) error {
+func (c *JobSales) Update(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *JobSales) Delete(db goquery.IDB) error {
+func (c *JobSales) Delete(db goquery.DBInterface) error {
 	return nil
 }
 
-func (c *JobSales) FromID(db goquery.IDB, id int64) (goquery.IModel, error) {
+func (c *JobSales) FromID(db goquery.DBInterface, id int64) (goquery.ModelInterface, error) {
 	return nil, nil
 }

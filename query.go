@@ -6,17 +6,21 @@ import (
 	"strings"
 )
 
+type Column string
+type TableName string
+
 type Q struct {
-	tableName   string
 	fields      []*Field
 	noAlias     []int
 	alias       string
 	raw         string
+	model       ModelInterface
 	queryType   QueryType
 	where       *whereClause
 	limit       int64
 	offset      int64
 	orderBy     [][]string
+	groupBy     []string
 	setSorter   []Column
 	sets        map[Column]interface{}
 	columnTypes map[Column]string
@@ -24,18 +28,16 @@ type Q struct {
 	inst        int64
 }
 
-func Query(
-	tableName TableName,
-	columnTypes map[Column]string,
-) *Q {
+func Query(model ModelInterface) *Q {
 	return &Q{
-		tableName:   string(tableName),
 		fields:      []*Field{},
 		noAlias:     []int{},
+		model:       model,
 		orderBy:     [][]string{},
+		groupBy:     []string{},
 		setSorter:   []Column{},
 		sets:        map[Column]interface{}{},
-		columnTypes: columnTypes,
+		columnTypes: model.Table_Column_Types(),
 		alias:       "t",
 		errors:      []string{},
 		inst:        0,
@@ -64,174 +66,21 @@ func (q *Q) OrderBy(col Column, dir OrderDir) *Q {
 	return q
 }
 
-// Fields injects fields as raw strings into the field clause of the query
-//
-//	sql, e := goquery.Select(&testassets.Job{}).
-//		Fields(
-//			NewField(FieldTypeBasic, "JobID"),
-//			NewField(FieldTypeBasic, "Name", "Foo"),
-//		)
-func (q *Q) Fields(fields ...*Field) *Q {
-	q.fields = fields
-	return q
-}
-
-func (q *Q) Raw(query string) *Q {
-	q.raw = query
-	return q
-}
-
-// Field includes a specific field in the columns to be returned by a result set
-func (q *Q) Field(name Column) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Field", string(name))
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeBasic, name))
-
-	return q
-}
-
-// FieldAs includes a specific field in the columns to be returned by a set aliased by `as`
-func (q *Q) FieldAs(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Field...as", string(name))
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeBasic, name, as))
-
-	return q
-}
-
-// FieldRaw allows for an arbitrary string (e.g. "NOW()") to be included in the select columns
-func (q *Q) FieldRaw(fieldStr, as string) *Q {
-	q.fields = append(q.fields, NewRawField(fieldStr+" AS "+"`"+as+"`"))
-
-	return q
-}
-
-// Count creates a count statement
-//
-//	q.Count(goquery.Column("Foo"), "FooCounted")
-//	COALESCE(COUNT(`t`.`Foo`), 0) AS `FooCounted`
-func (q *Q) Count(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...COUNT()", string(name))
-		return q
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeCount, name, as))
-	return q
-
-	// return q.FieldRaw("COUNT(`"+q.alias+"`.`"+string(name)+"`)", as)
-}
-
-// Sum creates a sum statement
-//
-//	q.Sum(goquery.Column("Foo"), "FooSummed")
-//	COALESCE(SUM(`t`.`Foo`), 0) AS `FooSummed`
-func (q *Q) Sum(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Sum()", string(name))
-		return q
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeSum, name, as))
-	return q
-
-	// return q.FieldRaw("COALESCE(SUM(`"+q.alias+"`.`"+string(name)+"`), 0)", as)
-}
-
-// Avg creates an Avg statement
-//
-//	q.Avg(goquery.Column("Foo"), "FooAveraged")
-//	COALESCE(AVG(`t`.`Foo`), 0) AS `FooAveraged`
-func (q *Q) Avg(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Sum()", string(name))
-		return q
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeAvg, name, as))
-	return q
-
-	// return q.FieldRaw("COALESCE(SUM(`"+q.alias+"`.`"+string(name)+"`), 0)", as)
-}
-
-// Min creates a min statement
-//
-//	q.Min(goquery.Column("Foo"), "MinFoo")
-//	COALESCE(MIN(`t`.`Foo`), 0) AS `MinFoo`
-func (q *Q) Min(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Min()", string(name))
-		return q
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeMin, name, as))
-	return q
-
-	// return q.FieldRaw("COALESCE(MIN(`"+q.alias+"`.`"+string(name)+"`), 0)", as)
-}
-
-// Max creates a max statement
-//
-//	q.Max(goquery.Column("Foo"), "MaxFoo")
-//	COALESCE(MAX(`t`.`Foo`), 0) AS `MaxFoo`
-func (q *Q) Max(name Column, as string) *Q {
-
-	if _, ok := q.columnTypes[name]; !ok {
-		q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "SELECT...Max()", string(name))
-		return q
-	}
-
-	q.fields = append(q.fields, NewField(FieldTypeMax, name, as))
-	return q
-
-	// return q.FieldRaw("COALESCE(MAX(`"+q.alias+"`.`"+string(name)+"`), 0)", as)
-}
-
-// Where creates or adds to an existing where clause
-//
-//   - Simple
-//     q.Where(goquery.EQ(goquery.Column("A"), "B"))
-//     WHERE `t`.`B` = `t`.`B`
-//
-//   - Multiple Arguments
-//     q.Where(goquery.EQ(goquery.Column("A"), "B"), goquery.And(), goquery.EQ(goquery.Column("C"), "D"))
-//     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
-//
-//   - Daisy Chain
-//     q.Where(goquery.EQ(goquery.Column("A"), "B")).Where(goquery.And()).Where(goquery.EQ(goquery.Column("C"), "D"))
-//     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
-//
-//   - Separate lines
-//     q.Where(goquery.EQ(goquery.Column("A"), "B"))
-//     q.Where(goquery.And())
-//     q.Where(goquery.EQ(goquery.Column("C"), "D"))
-//     WHERE `t`.`A` = 'B' AND `t`.`C` = 'D'
-func (q *Q) Where(args ...*WherePart) *Q {
-	// allow for multiple where calls in single query
-	if q.where == nil {
-		q.where = &whereClause{
-			query:      q,
-			WhereParts: []*WherePart{},
-		}
-	}
-
-	for k := range args {
-		q.where.WhereParts = append(q.where.WhereParts, args[k])
+func (q *Q) GroupBy(col ...Column) *Q {
+	for _, c := range col {
+		q.groupBy = append(q.groupBy, string(c))
 	}
 	return q
 }
 
-// func Save(model IModel) *Q {
+func (q *Q) GroupByColumns(cols ...Column) *Q {
+	for _, c := range cols {
+		q.groupBy = append(q.groupBy, string(c))
+	}
+	return q
+}
+
+// func Save(model ModelInterface) *Q {
 
 // 	var q *Q
 // 	colMap := model.Table_Column_Values()
@@ -256,7 +105,7 @@ func (q *Q) Where(args ...*WherePart) *Q {
 // 	return q
 // }
 
-// func Destroy(model IModel) *Q {
+// func Destroy(model ModelInterface) *Q {
 
 // 	var q *Q
 // 	colMap := model.Table_Column_Values()
@@ -314,7 +163,7 @@ func (q *Q) String() (string, error) {
 		q.alias = ""
 	}
 
-	sb.WriteString(" `" + string(q.tableName) + "`")
+	sb.WriteString(" `" + string(q.model.Table_Name()) + "`")
 
 	if len(q.alias) > 0 && q.queryType == QueryTypeSelect {
 		sb.WriteString(" `" + q.alias + "`")
@@ -383,18 +232,35 @@ func (q *Q) String() (string, error) {
 		}
 	}
 
-	if q.queryType == QueryTypeSelect && len(q.orderBy) > 0 {
-		orderBys := []string{}
-		for k := range q.orderBy {
+	if q.queryType == QueryTypeSelect {
 
-			// Validate the order by column
-			if _, ok := q.columnTypes[Column(q.orderBy[k][0])]; !ok {
-				q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "ORDER BY", q.orderBy[k][0])
+		if len(q.groupBy) > 0 {
+			groupBys := make([]string, len(q.groupBy))
+			for k := range q.groupBy {
+
+				// Validate the group by column
+				if _, ok := q.columnTypes[Column(q.groupBy[k])]; !ok {
+					q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "GROUP BY", q.groupBy[k])
+				}
+
+				groupBys[k] = q.col(q.groupBy[k])
 			}
-
-			orderBys = append(orderBys, q.col(q.orderBy[k][0])+" "+strings.ToUpper(q.orderBy[k][1]))
+			sb.WriteString(" GROUP BY " + strings.Join(groupBys, ", "))
 		}
-		sb.WriteString(" ORDER BY " + strings.Join(orderBys, ", "))
+
+		if len(q.orderBy) > 0 {
+			orderBys := make([]string, len(q.orderBy))
+			for k := range q.orderBy {
+
+				// Validate the order by column
+				if _, ok := q.columnTypes[Column(q.orderBy[k][0])]; !ok {
+					q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "ORDER BY", q.orderBy[k][0])
+				}
+
+				orderBys[k] = q.col(q.orderBy[k][0]) + " " + strings.ToUpper(q.orderBy[k][1])
+			}
+			sb.WriteString(" ORDER BY " + strings.Join(orderBys, ", "))
+		}
 	}
 
 	if q.limit > 0 {
@@ -421,744 +287,19 @@ func (q *Q) col(colName string) string {
 	return "`" + string(colName) + "`"
 }
 
-func isConjunction(whereType WhereType) bool {
-
-	switch whereType {
-	case WhereTypeAnd, WhereTypeOr:
-		return true
-	default:
-		return false
-	}
-
-}
-
-func (q *Q) printWhereClause(columnTypes map[Column]string, whereParts []*WherePart) string {
-
-	sb := strings.Builder{}
-
-	for k := range whereParts {
-
-		if whereParts[k] == nil {
-			continue
-		}
-
-		w := whereParts[k]
-
-		if w.e != nil {
-			q.error(w.e.Error())
-		}
-
-		isConj := isConjunction(w.whereType)
-
-		// If this is is not a conjunction AND fieldName is not empty
-		if !isConj && len(w.fieldName) > 0 {
-
-			if w.whereType != WhereTypeMod &&
-				w.whereType != WhereTypeModF &&
-				w.whereType != WhereTypeBitAnd &&
-				w.whereType != WhereTypeRaw {
-				sb.WriteString(q.col(w.fieldName))
-			}
-
-			if _, ok := columnTypes[Column(w.fieldName)]; !ok {
-				q.errorInvalidColumn(QUERY_ERROR_INVALID_COLUMN, "WHERE...", w.fieldName)
-			}
-		}
-
-		column := columnTypes[Column(w.fieldName)]
-
-		switch w.whereType {
-		case WhereTypeEquals, WhereTypeEqualsField:
-			sb.WriteString(" = ")
-		case WhereTypeNotEquals:
-			sb.WriteString(" <> ")
-		case WhereTypeGreaterThan:
-			sb.WriteString(" > ")
-		case WhereTypeLessThan:
-			sb.WriteString(" < ")
-		case WhereTypeGreaterThanOrEqualTo:
-			sb.WriteString(" >= ")
-		case WhereTypeLessThanOrEqualTo:
-			sb.WriteString(" <= ")
-		case WhereTypeIN:
-			sb.WriteString(" IN ")
-		case WhereTypeNotIN:
-			sb.WriteString(" NOT IN ")
-		case WhereTypeExists:
-			sb.WriteString("EXISTS")
-		case WhereTypeNotExists:
-			sb.WriteString("NOT EXISTS")
-		case WhereTypeBetween:
-			sb.WriteString(" BETWEEN ")
-		case WhereTypeAnd:
-			sb.WriteString(" AND ")
-		case WhereTypeOr:
-			sb.WriteString(" OR ")
-		case WhereTypeParenthesisEnd:
-			sb.WriteString(" )")
-		case WhereTypeParenthesisStart:
-			sb.WriteString("( ")
-		case WhereTypeNone:
-		case WhereTypeAll:
-			sb.WriteString("1=1")
-
-		case WhereTypeLike:
-			if column != "%s" {
-				q.errorInvalidColumn(QUERY_ERROR_INVALID_VALUE, "WHERE...LIKE", "`"+column+"` value: "+fmt.Sprint(w.values[0]))
-			}
-			sb.WriteString(" LIKE ")
-
-		case WhereTypeNotLike:
-			if column != "%s" {
-				q.errorInvalidColumn(QUERY_ERROR_INVALID_VALUE, "WHERE...NOT LIKE", "`"+column+"` value: "+fmt.Sprint(w.values[0]))
-			}
-			sb.WriteString(" NOT LIKE ")
-		}
-
-		if w.whereType != WhereTypeExists && w.whereType != WhereTypeNotExists && !isConj && len(w.values) > 0 {
-
-			switch w.whereType {
-			case WhereTypeEqualsField:
-				sb.WriteString(w.values[0].(string))
-			case WhereTypeMod:
-				sb.WriteString(
-					"MOD(" + string(q.col(w.fieldName)) + ", " + fmt.Sprint(w.values[0]) + ") = " + fmt.Sprint(w.values[1]),
-				)
-			case WhereTypeModF:
-				sb.WriteString(
-					"MOD(" + fmt.Sprint(w.values[0]) + ", " + string(q.col(w.fieldName)) + ") = " + fmt.Sprint(w.values[1]),
-				)
-			case WhereTypeBitAnd:
-				sb.WriteString(
-					string(q.col(w.fieldName)) + " & " + fmt.Sprint(w.values[0]) + " = " + fmt.Sprint(w.values[1]),
-				)
-			case WhereTypeBetween:
-				list := []string{}
-				for l := range w.values {
-					// String
-					if column == "%s" {
-						list = append(list, "'"+EscapeString(fmt.Sprint(w.values[l]))+"'")
-					} else {
-						list = append(list, fmt.Sprint(w.values[l]))
-					}
-				}
-				sb.WriteString(list[0] + " AND " + list[1])
-			case WhereTypeIN, WhereTypeNotIN:
-				list := []string{}
-				for l := range w.values {
-					// String
-					if column == "%s" {
-						list = append(list, "'"+EscapeString(fmt.Sprint(w.values[l]))+"'")
-					} else {
-						list = append(list, fmt.Sprint(w.values[l]))
-					}
-				}
-				sb.WriteString("( " + strings.Join(list, ", ") + " )")
-			case WhereTypeRaw:
-				sb.WriteString(fmt.Sprint(w.values[0]))
-			default:
-				// String
-				if column == "%s" {
-					sb.WriteString("'" + EscapeString(fmt.Sprint(w.values[0])) + "'")
-				} else {
-					sb.WriteString(fmt.Sprint(w.values[0]))
-				}
-			}
-		}
-
-		if w.whereType == WhereTypeExists || w.whereType == WhereTypeNotExists {
-			sb.WriteString(" ( " + fmt.Sprint(w.values[0]) + " )")
-		}
-
-		if len(w.subParts) > 0 {
-			sb.WriteString(q.printWhereClause(columnTypes, w.subParts))
-		}
-
-	}
-
-	return sb.String()
-}
-
 func (q *Q) error(err string) {
 	q.errors = append(q.errors, err)
 }
 
 func (q *Q) errorInvalidColumn(errType QueryErrorType, queryErrorLocation, comment string) {
-	q.error(fmt.Sprintf("%s at %s in model `%s` -- %s", errType, queryErrorLocation, q.tableName, comment))
+	q.error(fmt.Sprintf("%s at %s in model `%s` -- %s", errType, queryErrorLocation, q.model.Table_Name(), comment))
 }
 
-type WhereType int
-
-const (
-	WhereTypeEquals WhereType = iota
-	WhereTypeEqualsField
-	WhereTypeNotEquals
-	WhereTypeGreaterThan
-	WhereTypeLessThan
-	WhereTypeGreaterThanOrEqualTo
-	WhereTypeLessThanOrEqualTo
-	WhereTypeBetween
-	WhereTypeLike
-	WhereTypeNotLike
-	WhereTypeIN
-	WhereTypeNotIN
-	WhereTypeExists
-	WhereTypeNotExists
-	WhereTypeAnd
-	WhereTypeOr
-	WhereTypeParenthesisEnd
-	WhereTypeParenthesisStart
-	// WhereTypeNone indicates that the wherePart is a noop for the query,
-	// If, however, it contains any child clauses, they will be parsed as individual wherePart objects
-	WhereTypeNone
-	// WhereTypeAll is a WHERE clause of `1=1` used for convenience
-	// when conditionally adding WHERE clauses starting with a conjunction (AND/OR,etc)
-	// separating them.
-	// e.g. SELECT * FROM `Foo` WHERE 1=1
-	//      SELECT * FROM `Foo` WHERE 1=1 AND FooID = 123;
-	WhereTypeAll
-	WhereTypeMod
-	WhereTypeModF
-	WhereTypeBitAnd
-	WhereTypeRaw
-)
-
-// WherePart is a part of a where clause.
-// This object is an exposed part of the api to make conditional queries easier
-// EXAMPLE:
-//
-//	wheres := []goquery.WherePart{
-//		goquery.EQ(models.ObjectRelationship_Column_IsDeleted, 0),
-//	}
-//	if objectTypeFrom != constants.ObjectTypeUnknown {
-//		wheres = append(wheres, goquery.And(), goquery.EQ(models.ObjectRelationship_Column_ObjectTypeFrom, objectTypeFrom))
-//	}
-//	if objectIDFrom > 0 {
-//		wheres = append(wheres, goquery.And(), goquery.EQ(models.ObjectRelationship_Column_ObjectIDFrom, objectIDFrom))
-//	}
-type WherePart struct {
-	whereType WhereType
-	fieldName string
-	values    []interface{}
-	subParts  []*WherePart
-	e         error
-}
-
-func newWherePart(whereType WhereType, fieldName string, values []interface{}) *WherePart {
-	return &WherePart{
-		whereType: whereType,
-		fieldName: fieldName,
-		values:    values,
-		subParts:  []*WherePart{},
-	}
-}
-
-type whereClause struct {
-	query      *Q
-	WhereParts []*WherePart
-}
-
-////
-// EXPOSED API
-////
-
-// EQ is an equals statement between a table column and a value
-func EQ(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeEquals,
-		string(fieldName),
-		[]interface{}{
-			value,
-		},
-	)
-}
-
-// EQF allows for one column to be equal to another
-// Example for a subselect
-//
-// goquery.Select(&models.UserGroupUser{}).Alias("ugu").FieldRaw("1", "n").Where(
-//
-//	goquery.EQF("UserID", "`u`.`UserID`"),
-//	goquery.And(),
-//	goquery.EQ("UserGroupID", groupID),
-//	goquery.And(),
-//	goquery.EQ("IsDeleted", 0),
-//
-// ),
-func EQF(fieldName1, fieldName2 string) *WherePart {
-	return newWherePart(
-		WhereTypeEqualsField,
-		fieldName1,
-		[]interface{}{fieldName2},
-	)
-}
-
-// NE is a not equals statement between a table column and a value
-func NE(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeNotEquals,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// LT is a less than statement between a table column and a value
-// LT('foo', 1) => WHERE `t`.`foo` < 1
-func LT(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeLessThan,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// GT is a greater than statement between a table column and a value
-func GT(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeGreaterThan,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// LTOE is a less than or equals (<=) statement between a table column and a value
-//
-//	`t`.`Col` <= value
-func LTOE(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeLessThanOrEqualTo,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// GTOE is a greater than or equals statement (>=) between a table column and a value
-//
-//	`t`.`Col` >= value
-func GTOE(fieldName Column, value interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeGreaterThanOrEqualTo,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// Mod is applies modulo operation on column and value testing if it equals remainder
-//
-//	MOD(`t`.`Field`, value) = remainder
-func Mod(fieldName Column, value, remainder int64) *WherePart {
-	return newWherePart(
-		WhereTypeMod,
-		string(fieldName),
-		[]interface{}{value, remainder},
-	)
-}
-
-// Modf MOD(value, `t`.`Field`) = remainder
-// Example: goquery.Mod("foo", 2, 1) -> `t`.`Foo` % 2 = 1
-func Modf(value int64, fieldName Column, remainder int64) *WherePart {
-	return newWherePart(
-		WhereTypeModF,
-		string(fieldName),
-		[]interface{}{value, remainder},
-	)
-}
-
-// BitAnd `t`.`Field` & a = b
-// Example: goquery.BitAnd("foo", 2, 1) -> `t`.`Foo` & 2 = 1
-func BitAnd(fieldName Column, a, b int64) *WherePart {
-	return newWherePart(
-		WhereTypeBitAnd,
-		string(fieldName),
-		[]interface{}{a, b},
-	)
-}
-
-// IN is an IN clause
-// Example: goquery.IN("col1", "foo", "bar", "baz")
-func IN(fieldName Column, values ...interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeIN,
-		string(fieldName),
-		values,
-	)
-}
-
-// NOTIN is an NOT IN clause
-// Example: goquery.NOTIN("col1", "foo", "bar", "baz")
-// Example: queyr.NOTIN("col2", 1, 2, 3)
-func NOTIN(fieldName Column, values ...interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeNotIN,
-		string(fieldName),
-		values,
-	)
-}
-
-// INString is a helper function for converting a slice of string arguments into
-// a slice of interface arguments, passed into an IN clause and returned
-func INString(fieldName Column, values []string) *WherePart {
-	interfaces := make([]interface{}, len(values))
-
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-
-	return IN(fieldName, interfaces...)
-}
-
-func NotInString(fieldName Column, values []string) *WherePart {
-	interfaces := make([]interface{}, len(values))
-
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-
-	return NOTIN(fieldName, interfaces...)
-}
-
-// INInt64 is a helper function for converting a slice of string arguments into
-// a slice of interface arguments, passed into an IN clause and returned
-func INInt64(fieldName Column, values []int64) *WherePart {
-	interfaces := make([]interface{}, len(values))
-
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-
-	return IN(fieldName, interfaces...)
-}
-
-func NotInInt64(fieldName Column, values []int64) *WherePart {
-	interfaces := make([]interface{}, len(values))
-
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-
-	return NOTIN(fieldName, interfaces...)
-}
-
-// INInt is a helper function for converting a slice of string arguments into
-// a slice of interface arguments, passed into an IN clause and returned
-func INInt(fieldName Column, values []int) *WherePart {
-	interfaces := make([]interface{}, len(values))
-
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-
-	return IN(fieldName, interfaces...)
-}
-
-func NotInInt(fieldName Column, values []int) *WherePart {
-	interfaces := make([]interface{}, len(values))
-	for k := range values {
-		interfaces[k] = values[k]
-	}
-	return NOTIN(fieldName, interfaces...)
-}
-
-// Rawf is a raw SQL statement
-// Example: goquery.Rawf("`t`.`LastRunDate` + 60000 < %d", seconds)),
-func Rawf(str string, args ...interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeRaw,
-		"",
-		[]interface{}{fmt.Sprintf(str, args...)},
-	)
-}
-
-// Between is a BETWEEN statement
-// Example: Between("")
-func Between(fieldName Column, from, to interface{}) *WherePart {
-	return newWherePart(
-		WhereTypeBetween,
-		string(fieldName),
-		[]interface{}{from, to},
-	)
-}
-
-func Like(fieldName Column, value string) *WherePart {
-	return newWherePart(
-		WhereTypeLike,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-func NotLike(fieldName Column, value string) *WherePart {
-	return newWherePart(
-		WhereTypeNotLike,
-		string(fieldName),
-		[]interface{}{value},
-	)
-}
-
-// And is an and statement with optional args that, if provided, are wrapped in parentheses
-// Example: And() will result in the word `AND` being added to the where clause
-// Example: And(EQ(1, 1), And(), And(2, 2)) will result in `AND ( 1 = 1 AND 2 = 2 )`
-func And(args ...*WherePart) *WherePart {
-
-	and := newWherePart(WhereTypeAnd, "", []interface{}{})
-
-	if len(args) > 0 {
-		and.subParts = append(and.subParts, PS())
-
-		for k := range args {
-			and.subParts = append(and.subParts, args[k])
-		}
-
-		and.subParts = append(and.subParts, PE())
-	}
-
-	return and
-}
-
-// Ands takes a list of args and separes them all by `AND`
-// Example: Ands(goquery.EQ(1,1), goquery.EQ(2,2), goquery.EQ(3,3)) == 1 = 1 AND 2 = 2 AND 3 = 3
-func Ands(args ...*WherePart) *WherePart {
-
-	if len(args) == 0 {
-		return nil
-	}
-
-	if len(args) == 1 {
-		return args[0]
-	}
-
-	ands := newWherePart(WhereTypeNone, "", []interface{}{})
-
-	subParts := []*WherePart{}
-
-	for k := range args {
-
-		if args[k] == nil {
-			continue
-		}
-
-		subParts = append(subParts, args[k])
-	}
-
-	for k := range subParts {
-
-		ands.subParts = append(ands.subParts, subParts[k])
-
-		// Last item
-		if k == len(subParts)-1 {
-			break
-		}
-
-		ands.subParts = append(ands.subParts, And())
-
-	}
-
-	return ands
-}
-
-func Or(args ...*WherePart) *WherePart {
-
-	or := newWherePart(WhereTypeOr, "", []interface{}{})
-
-	if len(args) > 0 {
-		or.subParts = append(or.subParts, PS())
-
-		for k := range args {
-			or.subParts = append(or.subParts, args[k])
-		}
-
-		or.subParts = append(or.subParts, PE())
-	}
-
-	return or
-}
-
-// Ors takes a list of args and separes them all by `OR`
-// Example: Ors(goquery.EQ(1,1), goquery.EQ(2,2), goquery.EQ(3,3)) == 1 = 1 OR 2 = 2 OR 3 = 3
-func Ors(args ...*WherePart) *WherePart {
-
-	if len(args) == 0 {
-		return nil
-	}
-
-	if len(args) == 1 {
-		return args[0]
-	}
-
-	ors := newWherePart(WhereTypeNone, "", []interface{}{})
-
-	subParts := []*WherePart{}
-
-	for k := range args {
-
-		if args[k] == nil {
-			continue
-		}
-
-		subParts = append(subParts, args[k])
-	}
-
-	for k := range subParts {
-
-		ors.subParts = append(ors.subParts, subParts[k])
-
-		// Last item
-		if k == len(subParts)-1 {
-			break
-		}
-
-		ors.subParts = append(ors.subParts, Or())
-	}
-
-	return ors
-}
-
-// Paren adds parenthesis to a query where clause
-// .Paren(a, b, c) => (a, b, c)
-func Paren(args ...*WherePart) *WherePart {
-	n := newWherePart(WhereTypeNone, "", []interface{}{})
-
-	if len(args) > 0 {
-		n.subParts = append(n.subParts, PS())
-		for k := range args {
-			n.subParts = append(n.subParts, args[k])
-		}
-
-		n.subParts = append(n.subParts, PE())
-	}
-
-	return n
-}
-
-// Parenthesis Start
-func PS() *WherePart {
-	return newWherePart(
-		WhereTypeParenthesisStart,
-		"",
-		[]interface{}{},
-	)
-}
-
-// Parenthesis End
-func PE() *WherePart {
-	return newWherePart(
-		WhereTypeParenthesisEnd,
-		"",
-		[]interface{}{},
-	)
-}
-
-// WhereAll adds a WHERE clause of `1=1` used for convenience
-// when conditionally adding WHERE clauses starting with a conjunction (AND/OR,etc)
-// separating them.
-// e.g. SELECT * FROM `Foo` WHERE 1=1
-//
-//	SELECT * FROM `Foo` WHERE 1=1 AND FooID = 123;
-func WhereAll() *WherePart {
-	return newWherePart(
-		WhereTypeAll,
-		"",
-		[]interface{}{},
-	)
-}
-
-// Exists is a where clause for the SQL EXISTS statement
-func Exists(clause *Q) *WherePart {
-	clauseString, e := clause.String()
-
-	w := newWherePart(
-		WhereTypeExists,
-		"",
-		[]interface{}{clauseString},
-	)
-	if e != nil {
-		w.e = e
-	}
-	return w
-}
-
-// Exists is a where clause for the SQL EXISTS statement
-func NotExists(clause *Q) *WherePart {
-	clauseString, e := clause.String()
-
-	w := newWherePart(
-		WhereTypeNotExists,
-		"",
-		[]interface{}{clauseString},
-	)
-	if e != nil {
-		w.e = e
-	}
-	return w
-}
-
-func Union(queries ...*Q) (string, error) {
-
-	sqls := []string{}
-	for k := range queries {
-		query, e := queries[k].String()
-		if e != nil {
-			return "", e
-		}
-		sqls = append(sqls, query)
-	}
-
-	return strings.Join(sqls, " UNION ALL "), nil
-}
-
-func Select(modelName TableName, columnTypes map[Column]string) *Q {
-	q := Query(modelName, columnTypes)
-	q.queryType = QueryTypeSelect
-	return q
-}
-
-func Raw(modelName TableName, columnTypes map[Column]string, query string) *Q {
-	q := Query(modelName, columnTypes)
-	q.queryType = QueryTypeRaw
-	q.raw = query
-	return q
-}
-
-func Update(modelName TableName, columnTypes map[Column]string) *Q {
-	q := Query(modelName, columnTypes)
-	q.queryType = QueryTypeUpdate
-	return q
-}
-
+// Set adds a column and value to be set in an update or insert query
 func (q *Q) Set(fieldName Column, value interface{}) *Q {
 	if _, ok := q.sets[fieldName]; !ok {
 		q.sets[fieldName] = value
 		q.setSorter = append(q.setSorter, fieldName)
 	}
 	return q
-}
-
-func Delete(modelName TableName, columnTypes map[Column]string) *Q {
-	q := Query(modelName, columnTypes)
-	q.queryType = QueryTypeDelete
-	return q
-}
-
-func Insert(modelName TableName, columnTypes map[Column]string) *Q {
-	q := Query(modelName, columnTypes)
-	q.queryType = QueryTypeInsert
-	return q
-}
-
-func EscapeString(value string) string {
-	var sb strings.Builder
-	for i := 0; i < len(value); i++ {
-		c := value[i]
-		switch c {
-		case '\\', 0, '\n', '\r', '\'', '"':
-			sb.WriteByte('\\')
-			sb.WriteByte(c)
-		case '\032':
-			sb.WriteByte('\\')
-			sb.WriteByte('Z')
-		default:
-			sb.WriteByte(c)
-		}
-	}
-	return sb.String()
 }

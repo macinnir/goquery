@@ -1,4 +1,4 @@
-module github.com/macinnir/query
+module github.com/macinnir/goquery
 
 go 1.26
 
